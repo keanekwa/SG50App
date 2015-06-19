@@ -55,7 +55,7 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
         assert actionBar != null;
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        final View view = inflater.inflate(R.layout.fragment_photos, container, false);
+        View view = inflater.inflate(R.layout.fragment_photos, container, false);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -116,16 +116,15 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    new TopPhotosFragment();
+                    return new TopPhotosFragment();
                 case 1:
-                    new BestOfPastFragment();
+                    return new BestOfPastFragment();
                 case 2:
-                    new DayAsSingaporeanFragment();
+                    return new DayAsSingaporeanFragment();
                 case 3:
-                    new FutureHopesFragment();
+                    return new FutureHopesFragment();
                 default:
                     return new Fragment();
             }
