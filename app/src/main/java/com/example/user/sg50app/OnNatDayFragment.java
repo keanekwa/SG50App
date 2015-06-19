@@ -39,10 +39,6 @@ public class OnNatDayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -56,14 +52,19 @@ public class OnNatDayFragment extends Fragment {
                 }
             }
         });
+    }
 
-        lvToShow =  (ListView) getActivity().findViewById(R.id.postListView);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_on_nat_day, container, false);
+
+        lvToShow =  (ListView) view.findViewById(R.id.postListView);
         ArrayAdapter<ParseObject> adapter;
         adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
         lvToShow.setAdapter(adapter);
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_on_nat_day, container, false);
+        return view;
     }
 
     @Override

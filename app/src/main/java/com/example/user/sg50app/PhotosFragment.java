@@ -2,6 +2,8 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,13 +25,13 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class PhotosFragment extends Fragment implements ActionBar.TabListener {
 
-    SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
     public static ArrayList<ParseObject> mFHF = new ArrayList<>();
     public static ArrayList<ParseObject> mDAS = new ArrayList<>();
@@ -50,39 +52,25 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        View view = inflater.inflate(R.layout.fragment_photos, container, false);
         final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         assert actionBar != null;
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#e74c3c")));
+        actionBar.setStackedBackgroundDrawable(new ColorDrawable(Color.parseColor("#e74c3c")));
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(false);
 
-        View view = inflater.inflate(R.layout.fragment_photos, container, false);
+
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager());
-
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) view.findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
-
-        // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by
-            // the adapter. Also specify this Activity object, which implements
-            // the TabListener interface, as the callback (listener) for when
-            // this tab is selected.
-            actionBar.addTab(actionBar.newTab().setText(mSectionsPagerAdapter.getPageTitle(i)).setTabListener(PhotosFragment.this));
-        }
+        mViewPager.setAdapter(new ViewPagerAdapter(getChildFragmentManager()));
 
         new UpdateTask().execute();
 
@@ -107,51 +95,6 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
 
     }
 
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            switch (position) {
-                case 0:
-                    return new TopPhotosFragment();
-                case 1:
-                    return new BestOfPastFragment();
-                case 2:
-                    return new DayAsSingaporeanFragment();
-                case 3:
-                    return new FutureHopesFragment();
-                default:
-                    return new Fragment();
-            }
-        }
-
-        @Override
-        public int getCount() {
-            // Show 4 total pages.
-            return 4;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.photo_title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.photo_title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.photo_title_section3).toUpperCase(l);
-                case 3:
-                    return getString(R.string.photo_title_section4).toUpperCase(l);
-            }
-            return null;
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -161,6 +104,16 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        try {
+            Field childFragmentManager = Fragment.class
+                    .getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -245,4 +198,5 @@ public class PhotosFragment extends Fragment implements ActionBar.TabListener {
         if(futureFrag!=null) futureFrag.refresh();
         if(topFrag!=null) topFrag.refresh();
     }*/
+
 }
