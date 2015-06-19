@@ -1,0 +1,91 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivityActionBar"
+                android:background="#e74c3c"
+    >
+
+    <EditText
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/userEditText"
+        android:hint="Username"
+        android:layout_gravity="center_vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:padding="15dp"
+        android:background="@drawable/loginedittexttopcurve"
+        android:textColor="#fff"
+        android:textColorHint="#ecf0f1"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/passEditText"
+        android:inputType="textPassword"
+        android:hint="Password"
+        android:layout_below="@+id/userEditText"
+        android:padding="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/loginedittextbottomcurve"
+        android:singleLine="false"
+        android:password="false"
+        android:textColor="#fff"
+        android:textColorHint="#ecf0f1"
+        android:fontFamily="Roboto" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/loginButton"
+        android:background="@drawable/loginbutton"
+        android:textColor="#e74c3c"
+        android:padding="15dp"
+        android:layout_below="@+id/passEditText"
+        android:layout_marginTop="30dp"
+        android:layout_alignRight="@+id/passEditText"
+        android:layout_alignEnd="@+id/passEditText"
+        android:layout_alignLeft="@+id/passEditText"
+        android:layout_alignStart="@+id/passEditText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup"
+        android:id="@+id/signUpTextView"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="#ffffff"
+        android:layout_marginBottom="30dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/singapicslogo"
+        android:layout_above="@+id/userEditText"
+        android:layout_alignLeft="@+id/userEditText"
+        android:layout_alignStart="@+id/userEditText"
+        android:layout_alignRight="@+id/userEditText"
+        android:layout_alignEnd="@+id/userEditText"
+        android:layout_marginBottom="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"/>
+
+</RelativeLayout>

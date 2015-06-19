@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">SG50App</string>
 
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
+    <string name="title_section1">Dashboard</string>
+    <string name="title_section2">Photos</string>
+    <string name="title_section3">On National Day</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,4 +11,64 @@
     <string name="action_example">Example action</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="best_of_past_category">BestOfPast</string>
+    <string name="day_as_sgean_category">DayAsSGean</string>
+    <string name="future_hopes_category">FutureHopes</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="signup">New to Singapics? Sign up here.</string>
+    <string name="login">Login</string>
+    <string name="login_dialog_message">Please wait while we log you into Singapics…</string>
+    <string name="join">Join Singapics</string>
+    <string name="subtitle">Celebrate SG50 with a crowd-sourced photobook of our little red dot!</string>
+    <string name="create">Create Account</string>
+    <string name="email">Email</string>
+    <string name="passwords_dont_match_error">Your passwords do not match. Please re-enter.</string>
+    <string name="empty_fields_error">Please fill in the empty fields.</string>
+    <string name="signup_dialog_message">Please wait while we create your account…</string>
+    <string name="nothing"/>
+    <string name="action_logout">Logout</string>
+    <string name="post_new_photo">Post New Photo</string>
+    <string name="logout_dialog_message">Please wait while we log you out of Singapics…</string>
+    <string name="title_activity_post_new">Post a New Photo</string>
+    <string name="picdisc">Picture the User has chosen</string>
+    <string name="remove">Remove</string>
+    <string name="takePhoto">Take a New Photo</string>
+    <string name="uploadPhoto">Upload Existing Photo</string>
+    <string name="title">Title</string>
+    <string name="caption">Caption</string>
+    <string name="category">Category</string>
+    <string name="postPhoto">Post Photo</string>
+    <string name="appName">Singapics</string>
+    <string name="menu">menu</string>
+    <string name="stuff">Pic User Has Chosen</string>
+    <string name="likes">likes</string>
+    <string name="space">" "</string>
+    <string name="photo_by">Photo by:</string>
+
+    <string-array name="category_arrays">
+        <item>Category</item>
+        <item>@string/photo_title_section2</item>
+        <item>@string/photo_title_section3</item>
+        <item>@string/photo_title_section4</item>
+    </string-array>
+    <string name="photo_title_section1">Top Photos</string>
+    <string name="photo_title_section2">Best of the Past</string>
+    <string name="photo_title_section3">A Day as a Singaporean</string>
+    <string name="photo_title_section4">Future Hopes for Singapore</string>
+    <string name="title_activity_camera">Take A Photo</string>
+    <string name="title_activity_on_national_day">Wishes</string>
+    <string name="placeholder">SG so nice</string>
+    <string name="placeholderName">John Smith</string>
+    <string name="enterHere">Enter Here</string>
+    <string name="post">Post</string>
+    <string name="onNatDay">On National Day, what do you want to do?</string>
+    <string name="back">Back</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
 </resources>
