@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private static Fragment mPhotosFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,7 @@ public class MainActivity extends ActionBarActivity
                 break;
             case 1:
                 newFragment = new PhotosFragment();
+                mPhotosFragment = newFragment;
                 mTitle = getString(R.string.title_section2);
                 break;
             case 2:
