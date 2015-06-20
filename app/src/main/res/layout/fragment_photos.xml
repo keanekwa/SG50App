@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.70"
         android:weightSum="4"
         android:orientation="horizontal">
 
@@ -19,50 +19,70 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/photo_title_section1"
-            android:id="@+id/topPhotosButton"/>
+            android:id="@+id/topPhotosButton"
+            android:textSize="18dp"
+            android:textColor="#ffffff"
+            android:background="@color/singapics_red"
+            android:padding="10dp" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/photo_title_section2"
-            android:id="@+id/pastButton"/>
+            android:id="@+id/pastButton"
+            android:textSize="16dp"
+            android:textColor="#ffffff"
+            android:background="@color/singapics_red"
+            android:padding="10dp" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/photo_title_section3"
-            android:id="@+id/presentButton"/>
+            android:id="@+id/presentButton"
+            android:textSize="15dp"
+            android:textAlignment="center"
+            android:background="@color/singapics_red"
+            android:textColor="#ffffff" />
 
         <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/photo_title_section4"
-            android:id="@+id/futureButton"/>
+            android:id="@+id/futureButton"
+            android:textSize="15dp"
+            android:textColor="#ffffff"
+            android:background="@color/singapics_red"
+            android:padding="3dp" />
 
         </LinearLayout>
 
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:weightSum="1">
         <ProgressBar
-            android:layout_width="wrap_content"
+            android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
             android:visibility="gone"
             android:id="@+id/photosLoadingPb"
-            android:layout_marginBottom="50dp"/>
+            android:layout_marginBottom="50dp"
+            android:layout_weight="0.40" />
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imgListView"
             android:layout_gravity="center"
-            android:listSelector="@android:color/transparent"/>
-    </FrameLayout>
+            android:listSelector="@android:color/transparent"
+            android:layout_weight="1.10" />
+    </LinearLayout>
 
 </LinearLayout>
