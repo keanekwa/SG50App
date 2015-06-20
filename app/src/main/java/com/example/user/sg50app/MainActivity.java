@@ -23,8 +23,7 @@ import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-                    FutureHopesFragment.OnFragmentSelectedListener{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -66,7 +65,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section1);
                 break;
             case 1:
-                newFragment = new PhotosFragment();
+                newFragment = new DashboardFragment(); //TODO: PhotosFragment();
                 mTitle = getString(R.string.title_section2);
                 break;
             case 2:
@@ -131,7 +130,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     //Handles refreshing
-    //I'd rather put this in PhotosFragment, but the function of an interface HAS to be in an activity ._.
+    /*I'd rather put this in PhotosFragment, but the function of an interface HAS to be in an activity ._.
     public void timeToRefresh(){
         if(PhotosFragment.topPhotosFragment!=null) {
             PhotosFragment.mTop.clear();
@@ -185,5 +184,5 @@ public class MainActivity extends ActionBarActivity
                 }
             });
         }
-    }
+    }*/
 }

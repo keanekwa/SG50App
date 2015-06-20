@@ -1,4 +1,4 @@
-package com.example.user.sg50app;
+/*package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.content.Context;
@@ -50,7 +50,7 @@ public class TopPhotosFragment extends Fragment {
         mCallback.timeToRefresh();
         /* 'see more' button
         View buttonView = inflater.inflate(R.layout.footer_view, container, false);
-        lvToShow.addFooterView(buttonView);*/
+        lvToShow.addFooterView(buttonView);
         return view;
     }
 
@@ -195,3 +195,4 @@ public class TopPhotosFragment extends Fragment {
         }
     }
 }
+*/
