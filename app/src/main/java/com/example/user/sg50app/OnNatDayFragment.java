@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class OnNatDayFragment extends Fragment {
     ArrayList<ParseObject> mPosts = new ArrayList<>();
     private ListView lvToShow;
     View mTextEntryView;
+    private ProgressBar loading;
 
     public OnNatDayFragment() {
         // Required empty public constructor
@@ -39,6 +41,22 @@ public class OnNatDayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_on_nat_day, container, false);
+
+        lvToShow = (ListView) view.findViewById(R.id.postListView);
+        loading = (ProgressBar) view.findViewById(R.id.natDayLoading);
+        refreshOnNatDay();
+
+        return view;
+    }
+
+    public void refreshOnNatDay(){
+        loading.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
         query.addDescendingOrder("createdAt");
         query.findInBackground(new FindCallback<ParseObject>() {
@@ -48,23 +66,13 @@ public class OnNatDayFragment extends Fragment {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPosts.add(parseObjects.get(j));
                     }
-
+                    ArrayAdapter<ParseObject> adapter;
+                    adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
+                    lvToShow.setAdapter(adapter);
+                    loading.setVisibility(View.GONE);
                 }
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_on_nat_day, container, false);
-
-        lvToShow =  (ListView) view.findViewById(R.id.postListView);
-        ArrayAdapter<ParseObject> adapter;
-        adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
-        lvToShow.setAdapter(adapter);
-
-        // Inflate the layout for this fragment
-        return view;
     }
 
     @Override
