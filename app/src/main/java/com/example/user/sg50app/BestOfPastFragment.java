@@ -26,10 +26,15 @@ import java.util.ArrayList;
 public class BestOfPastFragment extends Fragment {
 
     private ListView lvToShow;
-    ArrayList <ParseObject> mBOP = new ArrayList<>();
+    private FutureHopesFragment.OnFragmentSelectedListener mCallback;
+    private static ArrayList<ParseObject> mOldList = new ArrayList<>();
 
-    public BestOfPastFragment() {
+    public BestOfPastFragment(){
         // Required empty public constructor
+    }
+
+    public static BestOfPastFragment newInstance() {
+        return new BestOfPastFragment();
     }
 
     @Override
@@ -42,10 +47,7 @@ public class BestOfPastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_best_of_past, container, false);
         lvToShow =  (ListView)view.findViewById(R.id.imgListView3);
-        ArrayAdapter<ParseObject> adapter;
-        adapter = new BestOFPastAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mBOP);
-        lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        lvToShow.setAdapter(adapter);
+        mCallback.timeToRefresh();
         /* 'see more' button
         View buttonView = inflater.inflate(R.layout.footer_view, container, false);
         lvToShow.addFooterView(buttonView);*/
@@ -53,8 +55,31 @@ public class BestOfPastFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        mCallback.timeToRefresh();
+    }
+
+    public void refresh(){
+        //only refreshes if there has been a change
+        if (!mOldList.equals(PhotosFragment.mBOP)) {
+            mOldList = new ArrayList<>(PhotosFragment.mBOP);
+            ArrayAdapter<ParseObject> adapter;
+            adapter = new BestOFPastAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mBOP);
+            lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            lvToShow.setAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mCallback = (FutureHopesFragment.OnFragmentSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentSelectedListener");
+        }
     }
 
     @Override

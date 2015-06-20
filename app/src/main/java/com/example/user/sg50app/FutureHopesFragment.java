@@ -26,10 +26,19 @@ import java.util.ArrayList;
 public class FutureHopesFragment extends Fragment {
 
     private ListView lvToShow;
-    ArrayList <ParseObject> mFutHopes = new ArrayList<>();
+    private OnFragmentSelectedListener mCallback;
+    private static ArrayList<ParseObject> mOldList = new ArrayList<>();
+
+    public interface OnFragmentSelectedListener {
+        public void timeToRefresh();
+    }
 
     public FutureHopesFragment() {
         // Required empty public constructor
+    }
+
+    public static FutureHopesFragment newInstance() {
+        return new FutureHopesFragment();
     }
 
     @Override
@@ -42,10 +51,7 @@ public class FutureHopesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_future_hopes, container, false);
         lvToShow =  (ListView)view.findViewById(R.id.imgListView2);
-        ArrayAdapter<ParseObject> adapter;
-        adapter = new FutHopesAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mFHF);
-        lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        lvToShow.setAdapter(adapter);
+        mCallback.timeToRefresh();
         /* 'see more' button
         View buttonView = inflater.inflate(R.layout.footer_view, container, false);
         lvToShow.addFooterView(buttonView);*/
@@ -53,8 +59,31 @@ public class FutureHopesFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        mCallback.timeToRefresh();
+    }
+
+    public void refresh(){
+        //only refreshes if there has been a change
+        if (!mOldList.equals(PhotosFragment.mFHF)) {
+            mOldList = new ArrayList<>(PhotosFragment.mFHF);
+            ArrayAdapter<ParseObject> adapter;
+            adapter = new FutHopesAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mFHF);
+            lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            lvToShow.setAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mCallback = (OnFragmentSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentSelectedListener");
+        }
     }
 
     @Override

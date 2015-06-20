@@ -26,9 +26,15 @@ import java.util.ArrayList;
 public class TopPhotosFragment extends Fragment {
 
     private ListView lvToShow;
+    private FutureHopesFragment.OnFragmentSelectedListener mCallback;
+    private static ArrayList<ParseObject> mOldList = new ArrayList<>();
 
     public TopPhotosFragment() {
         // Required empty public constructor
+    }
+
+    public static TopPhotosFragment newInstance() {
+        return new TopPhotosFragment();
     }
 
     @Override
@@ -41,23 +47,39 @@ public class TopPhotosFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_top_photos, container, false);
         lvToShow =  (ListView)view.findViewById(R.id.imgListView);
-        refresh();
+        mCallback.timeToRefresh();
         /* 'see more' button
         View buttonView = inflater.inflate(R.layout.footer_view, container, false);
         lvToShow.addFooterView(buttonView);*/
         return view;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        mCallback.timeToRefresh();
+    }
+
     public void refresh(){
-        ArrayAdapter<ParseObject> adapter;
-        adapter = new TopImgAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mTop);
-        lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-        lvToShow.setAdapter(adapter);
+        //only refreshes if there has been a change
+        if (!mOldList.equals(PhotosFragment.mTop)) {
+            mOldList = new ArrayList<>(PhotosFragment.mTop);
+            ArrayAdapter<ParseObject> adapter;
+            adapter = new TopImgAdapter(getActivity(), R.layout.photos_list, PhotosFragment.mTop);
+            lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+            lvToShow.setAdapter(adapter);
+        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mCallback = (FutureHopesFragment.OnFragmentSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentSelectedListener");
+        }
     }
 
     @Override

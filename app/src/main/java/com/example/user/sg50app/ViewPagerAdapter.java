@@ -1,4 +1,4 @@
-package com.example.user.sg50app;
+/*package com.example.user.sg50app;
 
 
 import android.support.v4.app.Fragment;
@@ -60,4 +60,4 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return PAGE_COUNT;
     }
 
-}
+}*/
