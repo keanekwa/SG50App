@@ -65,7 +65,7 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section1);
                 break;
             case 1:
-                newFragment = new DashboardFragment(); //TODO: PhotosFragment();
+                newFragment = new PhotosFragment();
                 mTitle = getString(R.string.title_section2);
                 break;
             case 2:
@@ -128,61 +128,4 @@ public class MainActivity extends ActionBarActivity
 
         return super.onOptionsItemSelected(item);
     }
-
-    //Handles refreshing
-    /*I'd rather put this in PhotosFragment, but the function of an interface HAS to be in an activity ._.
-    public void timeToRefresh(){
-        if(PhotosFragment.topPhotosFragment!=null) {
-            PhotosFragment.mTop.clear();
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
-            query.addDescendingOrder("likeNumber");
-            query.setLimit(15);
-            query.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> parseObjects, ParseException e) {
-                    if (e == null) {
-                        for (int j = 0; j < parseObjects.size(); j++) {
-                            PhotosFragment.mTop.add(parseObjects.get(j));
-                            if (PhotosFragment.mTop.size() == 6) {
-                                PhotosFragment.topPhotosFragment.refresh();
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            });
-        }
-
-        if(PhotosFragment.dayAsSingaporeanFragment!=null && PhotosFragment.bestOfPastFragment!=null && PhotosFragment.futureHopesFragment!=null) {
-            PhotosFragment.mFHF.clear();
-            PhotosFragment.mBOP.clear();
-            PhotosFragment.mDAS.clear();
-            ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
-            query2.addDescendingOrder("createdAt");
-            query2.findInBackground(new FindCallback<ParseObject>() {
-                @Override
-                public void done(List<ParseObject> list, ParseException e) {
-                    for (int j = 0; j < list.size(); j++) {
-                        String category = list.get(j).getString("category");
-                        switch (category) {
-                            case "BestOfPast":
-                                if (PhotosFragment.mBOP.size() != 6) PhotosFragment.mBOP.add(list.get(j));
-                                else PhotosFragment.bestOfPastFragment.refresh();
-                                break;
-                            case "DayAsSGean":
-                                if (PhotosFragment.mDAS.size() != 6) PhotosFragment.mDAS.add(list.get(j));
-                                else PhotosFragment.dayAsSingaporeanFragment.refresh();
-                                break;
-                            case "FutureHopes":
-                                if (PhotosFragment.mFHF.size() != 6) PhotosFragment.mFHF.add(list.get(j));
-                                else PhotosFragment.futureHopesFragment.refresh();
-                                break;
-                        }
-
-                    }
-                }
-            });
-        }
-    }*/
 }
