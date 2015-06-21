@@ -2,8 +2,9 @@
     <string name="app_name">SG50App</string>
 
     <string name="title_section1">Dashboard</string>
-    <string name="title_section2">Photos</string>
-    <string name="title_section3">On National Day</string>
+    <string name="title_section2">Your Content</string>
+    <string name="title_section3">Photos</string>
+    <string name="title_section4">On National Day</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

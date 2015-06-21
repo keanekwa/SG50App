@@ -12,14 +12,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.FindCallback;
 import com.parse.LogOutCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
-
-import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity
@@ -66,13 +61,18 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section1);
                 break;
             case 1:
-                newFragment = new PhotosFragment();
-                mPhotosFragment = newFragment;
+                newFragment = new UserContentFragment();
                 mTitle = getString(R.string.title_section2);
                 break;
+
             case 2:
-                newFragment = new OnNatDayFragment();
+                newFragment = new PhotosFragment();
+                mPhotosFragment = newFragment;
                 mTitle = getString(R.string.title_section3);
+                break;
+            case 3:
+                newFragment = new OnNatDayFragment();
+                mTitle = getString(R.string.title_section4);
                 break;
         }
         if (newFragment != null) {
