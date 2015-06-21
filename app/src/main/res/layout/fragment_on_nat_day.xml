@@ -10,6 +10,21 @@
         android:visibility="gone"
         android:id="@+id/natDayLoading"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView3"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/shadow"
+        android:layout_marginTop="-10dp"
+        android:layout_alignParentTop="false"
+        android:elevation="1dp"
+        android:layout_above="@+id/postListView"
+        android:layout_marginBottom="-20dp"
+        android:id="@+id/relativeLayout3">
+    </RelativeLayout>
+
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -19,23 +34,41 @@
         android:layout_below="@+id/textView3"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:paddingTop="15dp"/>
+        android:paddingTop="15dp"
+        android:elevation="2dp"
+        android:background="#EEEEEE"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/onNatDay"
         android:id="@+id/textView3"
-        android:layout_alignParentTop="true"
-        android:layout_alignRight="@+id/postListView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:textSize="22sp"
         android:paddingRight="100dp"
         android:paddingLeft="15dp"
-        android:paddingBottom="30dp"
-        android:background="@color/singapics_red"
-        android:textColor="@color/white"
-        android:gravity="start|bottom|left"
-        android:paddingTop="80dp"/>
+        android:paddingBottom="50dp"
+        android:textColor="#333"
+        android:gravity="start|left|top"
+        android:elevation="0dp"
+        android:maxHeight="200dp"
+        android:minHeight="150dp"
+        android:layout_below="@+id/natDayLoading"
+        android:layout_toRightOf="@+id/natDayLoading"
+        android:layout_toEndOf="@+id/natDayLoading"
+        android:paddingTop="30dp"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView4"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:src="@drawable/sg50"
+        android:contentDescription="@string/sg50"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:elevation="-1dp"
+        android:layout_alignBottom="@+id/relativeLayout3"/>
+
 </RelativeLayout>
