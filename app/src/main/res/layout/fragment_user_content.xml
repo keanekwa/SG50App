@@ -61,7 +61,11 @@
             android:id="@+id/imgGridView"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:clickable="false"
+            android:columnWidth="125dp"
+            android:numColumns="auto_fit"
+            android:gravity="start" />
 
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"

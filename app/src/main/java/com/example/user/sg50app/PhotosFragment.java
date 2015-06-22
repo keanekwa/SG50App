@@ -2,6 +2,7 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -73,6 +75,7 @@ public class PhotosFragment extends Fragment {
         presentButton = (Button)view.findViewById(R.id.presentButton);
         futureButton = (Button)view.findViewById(R.id.futureButton);
         loading = (ProgressBar)view.findViewById(R.id.photosLoadingPb);
+        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton2);
 
         topButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +135,14 @@ public class PhotosFragment extends Fragment {
             setPhotosList();
         }
         else loadPhotos();
+
+        fabImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),PostNewActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

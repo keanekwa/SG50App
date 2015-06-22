@@ -6,11 +6,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -41,16 +43,24 @@ public class OnNatDayFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_on_nat_day, container, false);
-
+        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton);
         lvToShow = (ListView) view.findViewById(R.id.postListView);
         loading = (ProgressBar) view.findViewById(R.id.natDayLoading);
         refreshOnNatDay();
+
+        fabImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog();
+            }
+        });
 
         return view;
     }
@@ -84,6 +94,7 @@ public class OnNatDayFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
+
 
     private class wantAdapter extends ArrayAdapter<ParseObject> {
         //creating variables
@@ -202,6 +213,7 @@ public class OnNatDayFragment extends Fragment {
                 @Override
                 public void done(ParseException e) {
                     Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
+
                 }
             });
         }

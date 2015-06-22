@@ -61,7 +61,7 @@
         </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3.3"
@@ -82,7 +82,22 @@
             android:id="@+id/imgListView"
             android:layout_gravity="center"
             android:listSelector="@android:color/transparent"
-            android:layout_weight="1.10" />
-    </LinearLayout>
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="@dimen/fab_button_diameter"
+            android:layout_height="@dimen/fab_button_diameter"
+            android:background="@drawable/circle_icon"
+            android:src="@drawable/cameraoutline"
+            android:tint="@android:color/white"
+            android:elevation="20dp"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/fab_button_margin_bottom"
+            android:layout_marginRight="@dimen/fab_button_margin_right" />
+    </RelativeLayout>
 
 </LinearLayout>

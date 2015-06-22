@@ -2,4 +2,6 @@
 <resources>
     <item name="singapics_red" type="color">#ffe74c3c</item>
     <item name="white" type="color">#ffffffff</item>
+    <item name="grey" type="color">#cccc</item>
+
 </resources>

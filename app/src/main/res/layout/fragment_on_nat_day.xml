@@ -25,18 +25,19 @@
         android:id="@+id/relativeLayout3">
     </RelativeLayout>
 
-    <ListView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/postListView"
+        android:id="@+id/imageView4"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView3"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:paddingTop="15dp"
-        android:elevation="2dp"
-        android:background="#EEEEEE"/>
+        android:layout_alignParentStart="false"
+        android:src="@drawable/sg50"
+        android:contentDescription="@string/sg50"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:elevation="-1dp"
+        android:layout_alignBottom="@+id/relativeLayout3"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -57,18 +58,32 @@
         android:layout_toEndOf="@+id/natDayLoading"
         android:paddingTop="30dp"/>
 
-    <ImageView
-        android:layout_width="match_parent"
+    <ListView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView4"
-        android:layout_alignParentTop="true"
+        android:id="@+id/postListView"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="false"
-        android:src="@drawable/sg50"
-        android:contentDescription="@string/sg50"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:elevation="-1dp"
-        android:layout_alignBottom="@+id/relativeLayout3"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView3"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:paddingTop="15dp"
+        android:elevation="2dp"
+        android:background="#EEEEEE" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/fab_button_diameter"
+        android:layout_height="@dimen/fab_button_diameter"
+        android:background="@drawable/circle_icon"
+        android:src="@drawable/fab_ic_add"
+        android:tint="@android:color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="@dimen/fab_button_margin_bottom"
+        android:layout_marginRight="@dimen/fab_button_margin_right"
+        android:elevation="20dp"/>
+
 
 </RelativeLayout>

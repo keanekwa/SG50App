@@ -34,8 +34,8 @@ public class UserContentFragment extends Fragment {
     private static ArrayList<String> LIST_OF_PAGES;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public static ArrayList<ParseObject> mPHOTOS;
-    public static ArrayList<ParseObject> mWISHES;
+    public ArrayList<ParseObject> mPHOTOS;
+    public ArrayList<ParseObject> mWISHES;
 
     private ListView mWishListView;
     private GridView mPhotoGridView;
@@ -82,6 +82,11 @@ public class UserContentFragment extends Fragment {
             LIST_OF_PAGES.add(YOUR_PHOTOS_STRING);
             LIST_OF_PAGES.add(YOUR_WISHES_STRING);
         }
+        if (currentPage == null) {
+            currentPage = YOUR_PHOTOS_STRING;
+            mPhotoButton.setEnabled(false);
+        }
+
 
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
         query.addDescendingOrder("createdAt");
