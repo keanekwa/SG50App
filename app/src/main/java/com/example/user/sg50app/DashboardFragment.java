@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,12 +53,11 @@ public class DashboardFragment extends Fragment {
     Button postWish;
     View mTextEntryView;
 
+    ProgressBar loading;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
     @Override
@@ -65,6 +65,8 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+        loading = (ProgressBar)view.findViewById(R.id.dashboardLoading);
+        loading.setVisibility(View.VISIBLE);
         Activity activity = getActivity();
         if(activity != null) {
             slidingimage = (ParseImageView) view.findViewById(R.id.imageOfTheDay);
@@ -88,6 +90,7 @@ public class DashboardFragment extends Fragment {
                                         placeholder.add(parseObjects.get(j));
                                     }
                                     final Handler mHandler = new Handler();
+                                    loading.setVisibility(View.GONE);
 
                                     // Create runnable for posting
                                     final Runnable mUpdateResults = new Runnable() {

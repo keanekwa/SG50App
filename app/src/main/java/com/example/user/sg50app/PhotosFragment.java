@@ -139,6 +139,7 @@ public class PhotosFragment extends Fragment {
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loading.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(getActivity(),PostNewActivity.class);
                 startActivity(intent);
             }
@@ -280,7 +281,7 @@ public class PhotosFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
 
      public interface OnPhotosInteractionListener {
-     public void refreshPhotos();
+        public void refreshPhotos();
      }*/
 
     private class PhotosAdapter extends ArrayAdapter<ParseObject> {

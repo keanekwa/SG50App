@@ -34,8 +34,8 @@ public class UserContentFragment extends Fragment {
     private static ArrayList<String> LIST_OF_PAGES;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    public ArrayList<ParseObject> mPHOTOS;
-    public ArrayList<ParseObject> mWISHES;
+    public static ArrayList<ParseObject> mPHOTOS;
+    public static ArrayList<ParseObject> mWISHES;
 
     private ListView mWishListView;
     private GridView mPhotoGridView;
@@ -75,10 +75,10 @@ public class UserContentFragment extends Fragment {
         mPhotoButton = (Button) view.findViewById(R.id.userPhotoButton);
         mWishButton = (Button) view.findViewById(R.id.userWishButton);
         loading = (ProgressBar) view.findViewById(R.id.progressBar2);
+        loading.setVisibility(View.VISIBLE);
 
         if (LIST_OF_PAGES == null) {
             LIST_OF_PAGES = new ArrayList<>();
-
             LIST_OF_PAGES.add(YOUR_PHOTOS_STRING);
             LIST_OF_PAGES.add(YOUR_WISHES_STRING);
         }
@@ -86,49 +86,6 @@ public class UserContentFragment extends Fragment {
             currentPage = YOUR_PHOTOS_STRING;
             mPhotoButton.setEnabled(false);
         }
-
-
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
-        query.addDescendingOrder("createdAt");
-        query.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    if (mPHOTOS == null) {
-                        mPHOTOS = new ArrayList<>();
-                    }
-                    for (int j = 0; j < parseObjects.size(); j++) {
-                        mPHOTOS.add(parseObjects.get(j));
-                    }
-
-
-                    query.cancel();
-                }
-            }
-        });
-
-        final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("onNationalDay");
-        query2.addDescendingOrder("createdAt");
-        query2.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
-        query2.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    if (mWISHES == null) {
-                        mWISHES = new ArrayList<>();
-                    }
-                    for (int j = 0; j < parseObjects.size(); j++) {
-                        mWISHES.add(parseObjects.get(j));
-                    }
-
-
-                    query2.cancel();
-                }
-            }
-        });
-
-
 
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,7 +100,52 @@ public class UserContentFragment extends Fragment {
             }
         });
 
+        Boolean hasLoaded = true;
+        if(mPHOTOS==null) {
+            mPHOTOS = new ArrayList<>();
+            hasLoaded = false;
+        }
+        if(mWISHES==null){
+            mWISHES = new ArrayList<>();
+            hasLoaded = false;
+        }
+
+        if(hasLoaded) setContentList();
+        else refresh();
+        loading.setVisibility(View.GONE);
+
         return view;
+    }
+
+    public void refresh(){
+        loading.setVisibility(View.VISIBLE);
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
+        query.addDescendingOrder("createdAt");
+        query.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
+                    for (int j = 0; j < parseObjects.size(); j++) {
+                        mPHOTOS.add(parseObjects.get(j));
+                    }
+                    final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("onNationalDay");
+                    query2.addDescendingOrder("createdAt");
+                    query2.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+                    query2.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> parseObjects, ParseException e) {
+                            if (e == null) {
+                                for (int j = 0; j < parseObjects.size(); j++) {
+                                    mWISHES.add(parseObjects.get(j));
+                                }
+                                setContentList();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
@@ -164,7 +166,7 @@ public class UserContentFragment extends Fragment {
 
         if (!pageToSet.equals(currentPage)) {
             currentPage = pageToSet;
-            setPhotosList();
+            setContentList();
         }
 
         switch (pageToSet) {
@@ -179,19 +181,17 @@ public class UserContentFragment extends Fragment {
         }
     }
 
-    public void setPhotosList() {
+    public void setContentList() {
         loading.setVisibility(View.VISIBLE);
-        PhotoListAdapter adapter;
-        wantAdapter adapter2 ;
         switch (currentPage) {
             case "Your Photos":
-                adapter = new PhotoListAdapter(getActivity(), R.layout.user_photos_list, mPHOTOS);
+                PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.user_photos_list, mPHOTOS);
                 mWishListView.setVisibility(View.INVISIBLE);
                 mPhotoGridView.setVisibility(View.VISIBLE);
                 mPhotoGridView.setAdapter(adapter);
                 break;
             case "Your Wishes":
-                adapter2 = new wantAdapter(getActivity(), R.layout.want_list, mWISHES);
+                wantAdapter adapter2 = new wantAdapter(getActivity(), R.layout.want_list, mWISHES);
                 mPhotoGridView.setVisibility(View.INVISIBLE);
                 mWishListView.setVisibility(View.VISIBLE);
                 mWishListView.setAdapter(adapter2);

@@ -56,14 +56,12 @@
             android:visibility="invisible" />
 
         <GridView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/imgGridView"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
             android:visibility="visible"
             android:clickable="false"
-            android:columnWidth="125dp"
             android:numColumns="auto_fit"
             android:gravity="start" />
 
@@ -71,6 +69,7 @@
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:id="@+id/progressBar2"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />

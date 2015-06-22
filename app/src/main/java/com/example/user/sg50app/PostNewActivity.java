@@ -183,6 +183,7 @@ public class PostNewActivity extends ActionBarActivity {
                                     public void done(ParseException e) {
                                         Toast.makeText(PostNewActivity.this, "Picture Uploaded!", Toast.LENGTH_LONG).show();
                                         Intent mainActIntent = new Intent(PostNewActivity.this, MainActivity.class);
+                                        mainActIntent.putExtra("toRefreshPhotos", true);
                                         startActivity(mainActIntent);
                                     }
                                 });

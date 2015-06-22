@@ -31,6 +31,7 @@ public class SplashScreenActivity extends Activity {
             startActivity(intent);
         }
         else {
+            //LOADING FOR PHOTOS FRAGMENT
             if (PhotosFragment.mTOP==null) PhotosFragment.mTOP = new ArrayList<>();
             else PhotosFragment.mTOP.clear();
             if (PhotosFragment.mPAST==null) PhotosFragment.mPAST = new ArrayList<>();
@@ -71,8 +72,7 @@ public class SplashScreenActivity extends Activity {
                                             }
 
                                         }
-                                        Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-                                        startActivity(i);
+                                        loadUserContentContent();
                                     }
                                 });
                                 break;
@@ -83,5 +83,38 @@ public class SplashScreenActivity extends Activity {
                 }
             });
         }
+    }
+
+    private void loadUserContentContent(){
+        UserContentFragment.mPHOTOS = new ArrayList<>();
+        UserContentFragment.mWISHES = new ArrayList<>();
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
+        query.addDescendingOrder("createdAt");
+        query.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
+                    for (int j = 0; j < parseObjects.size(); j++) {
+                        UserContentFragment.mPHOTOS.add(parseObjects.get(j));
+                    }
+                    final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("onNationalDay");
+                    query2.addDescendingOrder("createdAt");
+                    query2.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+                    query2.findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> parseObjects, ParseException e) {
+                            if (e == null) {
+                                for (int j = 0; j < parseObjects.size(); j++) {
+                                    UserContentFragment.mWISHES.add(parseObjects.get(j));
+                                }
+                                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                startActivity(i);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 }
