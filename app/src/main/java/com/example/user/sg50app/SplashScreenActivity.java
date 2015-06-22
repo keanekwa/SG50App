@@ -108,6 +108,7 @@ public class SplashScreenActivity extends Activity {
                                 for (int j = 0; j < parseObjects.size(); j++) {
                                     UserContentFragment.mWISHES.add(parseObjects.get(j));
                                 }
+                                OnNatDayFragment.mPosts = new ArrayList<>();
                                 ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
                                 query.addDescendingOrder("createdAt");
                                 query.findInBackground(new FindCallback<ParseObject>() {
