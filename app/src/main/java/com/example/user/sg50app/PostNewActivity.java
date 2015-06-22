@@ -61,7 +61,7 @@ public class PostNewActivity extends ActionBarActivity {
         setContentView(R.layout.activity_post_new);
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setBackgroundDrawable(new ColorDrawable(R.color.singapics_red));
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.singapics_red)));
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mTitleEditText = (EditText)findViewById(R.id.captionEditText);
