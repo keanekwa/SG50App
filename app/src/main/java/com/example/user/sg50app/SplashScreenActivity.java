@@ -108,8 +108,20 @@ public class SplashScreenActivity extends Activity {
                                 for (int j = 0; j < parseObjects.size(); j++) {
                                     UserContentFragment.mWISHES.add(parseObjects.get(j));
                                 }
-                                Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-                                startActivity(i);
+                                ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
+                                query.addDescendingOrder("createdAt");
+                                query.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> parseObjects, ParseException e) {
+                                        if (e == null) {
+                                            for (int j = 0; j < parseObjects.size(); j++) {
+                                                OnNatDayFragment.mPosts.add(parseObjects.get(j));
+                                            }
+                                            Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+                                            startActivity(i);
+                                        }
+                                    }
+                                });
                             }
                         }
                     });

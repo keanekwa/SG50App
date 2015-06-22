@@ -31,7 +31,7 @@ import java.util.List;
 
 public class OnNatDayFragment extends Fragment {
 
-    ArrayList<ParseObject> mPosts = new ArrayList<>();
+    public static ArrayList<ParseObject> mPosts;
     private ListView lvToShow;
     View mTextEntryView;
     private ProgressBar loading;
@@ -53,7 +53,12 @@ public class OnNatDayFragment extends Fragment {
         ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton);
         lvToShow = (ListView) view.findViewById(R.id.postListView);
         loading = (ProgressBar) view.findViewById(R.id.natDayLoading);
-        refreshOnNatDay();
+
+        if(mPosts==null){
+            mPosts = new ArrayList<>();
+            refreshOnNatDay();
+        }
+        else setListNatDay();
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,13 +81,18 @@ public class OnNatDayFragment extends Fragment {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPosts.add(parseObjects.get(j));
                     }
-                    ArrayAdapter<ParseObject> adapter;
-                    adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
-                    lvToShow.setAdapter(adapter);
-                    loading.setVisibility(View.GONE);
+                    setListNatDay();
                 }
             }
         });
+    }
+
+    public void setListNatDay(){
+        loading.setVisibility(View.VISIBLE);
+        ArrayAdapter<ParseObject> adapter;
+        adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
+        lvToShow.setAdapter(adapter);
+        loading.setVisibility(View.GONE);
     }
 
     @Override
