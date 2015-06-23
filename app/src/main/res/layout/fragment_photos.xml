@@ -4,67 +4,78 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="4"
     tools:context="com.example.user.sg50app.PhotosFragment">
 
     <LinearLayout
+        android:id="@+id/toolbar_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.7"
+        android:layout_height="wrap_content"
+        android:background="@color/singapics_red"
+        android:orientation="horizontal"
         android:weightSum="4"
-        android:orientation="horizontal">
+        >
 
         <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/photo_title_section1"
             android:id="@+id/topPhotosButton"
-            android:textSize="18dp"
-            android:textColor="#ffffff"
-            android:background="@color/singapics_red"
-            android:padding="10dp" />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textAllCaps="true"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:text="@string/photo_title_section1"
+            android:textColor="@color/translucent_white"
             android:layout_weight="1"
-            android:text="@string/photo_title_section2"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"
+            />
+
+        <Button
             android:id="@+id/pastButton"
-            android:textSize="16dp"
-            android:textColor="#ffffff"
-            android:background="@color/singapics_red"
-            android:padding="10dp" />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textAllCaps="true"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:text="@string/photo_title_section2"
+            android:textColor="@color/translucent_white"
             android:layout_weight="1"
-            android:text="@string/photo_title_section3"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
             android:id="@+id/presentButton"
-            android:textSize="15dp"
-            android:textAlignment="center"
-            android:background="@color/singapics_red"
-            android:textColor="#ffffff" />
-
-        <Button
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:textAllCaps="true"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:text="@string/photo_title_section3"
+            android:textColor="@color/translucent_white"
             android:layout_weight="1"
-            android:text="@string/photo_title_section4"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <Button
             android:id="@+id/futureButton"
-            android:textSize="15dp"
-            android:textColor="#ffffff"
-            android:background="@color/singapics_red"
-            android:padding="3dp" />
-
-        </LinearLayout>
-
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textAllCaps="true"
+            android:gravity="top"
+            android:padding="16dp"
+            android:textStyle="bold"
+            android:text="@string/photo_title_section4"
+            android:textColor="@color/translucent_white"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3.3"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1">
         <ProgressBar

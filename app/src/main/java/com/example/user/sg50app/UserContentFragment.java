@@ -2,8 +2,6 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -32,8 +30,6 @@ import java.util.List;
 
 public class UserContentFragment extends Fragment {
     private static ArrayList<String> LIST_OF_PAGES;
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     public static ArrayList<ParseObject> mPHOTOS;
     public static ArrayList<ParseObject> mWISHES;
 
@@ -45,8 +41,6 @@ public class UserContentFragment extends Fragment {
     String YOUR_PHOTOS_STRING = "Your Photos";
     String YOUR_WISHES_STRING = "Your Wishes";
     private String currentPage;
-
-
 
     private ProgressBar loading;
 

@@ -35,7 +35,6 @@ import java.util.Date;
 public class PostNewActivity extends ActionBarActivity {
 
     private EditText mTitleEditText;
-    private EditText mCaptionEditText;
     private Spinner mCategorySpinner;
     private Button mPostButton;
     private Button mTakePhoto;
@@ -65,7 +64,6 @@ public class PostNewActivity extends ActionBarActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mTitleEditText = (EditText)findViewById(R.id.captionEditText);
-        mCaptionEditText = (EditText)findViewById(R.id.captionEditText);
         mCategorySpinner = (Spinner)findViewById(R.id.categorySpinner);
         mPostButton = (Button)findViewById(R.id.finalizeButton);
         mLoading = (ProgressBar)findViewById(R.id.loadingProgressBar);

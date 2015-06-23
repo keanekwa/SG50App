@@ -111,7 +111,7 @@ public class PhotosFragment extends Fragment {
         }
         if (currentPage == null) {
             currentPage = TOP_PHOTOS_STRING;
-            topButton.setEnabled(false);
+            setTabAsSelected(topButton, true);
         }
 
         Boolean fromSplashScreen = true;
@@ -171,29 +171,40 @@ public class PhotosFragment extends Fragment {
 
         switch (pageToSet){
             case "Top Photos":
-                topButton.setEnabled(false);
-                pastButton.setEnabled(true);
-                presentButton.setEnabled(true);
-                futureButton.setEnabled(true);
+                setTabAsSelected(topButton, true);
+                setTabAsSelected(pastButton, false);
+                setTabAsSelected(presentButton, false);
+                setTabAsSelected(futureButton, false);
                 break;
             case "Best Of The Past":
-                topButton.setEnabled(true);
-                pastButton.setEnabled(false);
-                presentButton.setEnabled(true);
-                futureButton.setEnabled(true);
+                setTabAsSelected(topButton, false);
+                setTabAsSelected(pastButton, true);
+                setTabAsSelected(presentButton, false);
+                setTabAsSelected(futureButton, false);
                 break;
             case "A Day As A Singaporean":
-                topButton.setEnabled(true);
-                pastButton.setEnabled(true);
-                presentButton.setEnabled(false);
-                futureButton.setEnabled(true);
+                setTabAsSelected(topButton, false);
+                setTabAsSelected(pastButton, false);
+                setTabAsSelected(presentButton, true);
+                setTabAsSelected(futureButton, false);
                 break;
             case "Future Hopes For Singapore":
-                topButton.setEnabled(true);
-                pastButton.setEnabled(true);
-                presentButton.setEnabled(true);
-                futureButton.setEnabled(false);
+                setTabAsSelected(topButton, false);
+                setTabAsSelected(pastButton, false);
+                setTabAsSelected(presentButton, false);
+                setTabAsSelected(futureButton, true);
                 break;
+        }
+    }
+
+    public void setTabAsSelected (Button button, boolean isSelected) {
+        if (isSelected) {
+            button.setBackgroundDrawable(getResources().getDrawable(R.drawable.tab_bottom_border));
+            button.setTextColor(getResources().getColor(R.color.white));
+        }
+        else {
+            button.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
+            button.setTextColor(getResources().getColor(R.color.translucent_white));
         }
     }
 
