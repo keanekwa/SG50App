@@ -1,0 +1,49 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="4"
+    tools:context="com.example.user.sg50app.PhotosFragment">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1">
+        <ProgressBar
+            android:layout_width="153dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone"
+            android:id="@+id/vidsLoadingPb"
+            android:layout_marginBottom="50dp"
+            android:layout_weight="0.40" />
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/vidListView"
+            android:layout_gravity="center"
+            android:listSelector="@android:color/transparent"
+            android:layout_weight="2" />
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="@dimen/fab_button_diameter"
+            android:layout_height="@dimen/fab_button_diameter"
+            android:background="@drawable/circle_icon"
+            android:src="@drawable/fab_ic_add"
+            android:tint="@android:color/white"
+            android:elevation="20dp"
+            android:layout_gravity="right"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/fab_button_margin_bottom"
+            android:layout_marginRight="@dimen/fab_button_margin_right" />
+    </RelativeLayout>
+
+</LinearLayout>

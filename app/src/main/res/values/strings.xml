@@ -5,6 +5,7 @@
     <string name="title_section2">Your Content</string>
     <string name="title_section3">Community Photos</string>
     <string name="title_section4">On National Day...</string>
+    <string name="title_section5">Special Occasions</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -73,4 +74,5 @@
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="sg50">sg50</string>
+    <string name="title_activity_play_video">PlayVideoActivity</string>
 </resources>

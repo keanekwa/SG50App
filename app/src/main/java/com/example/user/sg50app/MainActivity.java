@@ -80,6 +80,10 @@ public class MainActivity extends ActionBarActivity
                 newFragment = new OnNatDayFragment();
                 mTitle = getString(R.string.title_section4);
                 break;
+            case 4:
+                newFragment = new VideosFragment();
+                mTitle = getString(R.string.title_section5);
+                break;
         }
         if (newFragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
