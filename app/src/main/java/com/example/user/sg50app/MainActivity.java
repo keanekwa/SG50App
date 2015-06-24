@@ -90,6 +90,9 @@ public class MainActivity extends ActionBarActivity
             fragmentManager.beginTransaction().replace(R.id.container, newFragment).commit();
         }
     }
+    @Override
+    public void onBackPressed() {
+    }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();

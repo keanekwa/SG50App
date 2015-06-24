@@ -9,14 +9,13 @@
         android:layout_height="215dp"
         android:layout_gravity="center_horizontal">
 
-        <com.google.android.youtube.player.YouTubePlayerView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/youtube_player"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
+            android:id="@+id/videoThumbnail"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="centerCrop" />
     </RelativeLayout>
 
     <RelativeLayout

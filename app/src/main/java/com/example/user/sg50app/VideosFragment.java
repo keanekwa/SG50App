@@ -1,17 +1,18 @@
 package com.example.user.sg50app;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Bundle;
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -24,6 +25,8 @@ import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 import com.google.android.youtube.player.YouTubePlayerSupportFragment;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.android.youtube.player.YouTubeThumbnailLoader;
+import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
@@ -32,15 +35,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideosFragment extends YouTubePlayerSupportFragment implements YouTubePlayer.OnInitializedListener {
+public class VideosFragment extends Fragment {
 
-    public static final String API_KEY = "AIzaSyCzqHCXslgdrjc_iQsGBQ10-pMVVOKF8Ps";
-    private YouTubePlayer youtubePlayer;
-    public static String VIDEO_ID;
-    private ArrayList<ParseObject> mVideos;
+    private static ArrayList<ParseObject> mVideos;
 
     private ProgressBar loading;
 
@@ -52,91 +54,26 @@ public class VideosFragment extends YouTubePlayerSupportFragment implements YouT
         // Required empty public constructor
     }
 
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (mVideos == null){
             mVideos = new ArrayList<>();
+
         }
 
-        initialize(API_KEY, this);
+
     }
 
-    @Override
-    public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult result) {
-        Toast.makeText(getActivity(), "Failed to Initialize!", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-        if (!wasRestored) {
-            player.cueVideo(VIDEO_ID);
-        }
-        /** add listeners to YouTubePlayer instance **/
-        player.setPlayerStateChangeListener(playerStateChangeListener);
-        player.setPlaybackEventListener(playbackEventListener);
-        youtubePlayer = player;
-        /** Start buffering **/
-    }
-
-    private YouTubePlayer.PlaybackEventListener playbackEventListener = new YouTubePlayer.PlaybackEventListener() {
-
-        @Override
-        public void onBuffering(boolean arg0) {
-        }
-
-        @Override
-        public void onPaused() {
-        }
-
-        @Override
-        public void onPlaying() {
-        }
-
-        @Override
-        public void onSeekTo(int arg0) {
-        }
-
-        @Override
-        public void onStopped() {
-        }
-
-    };
-
-    private YouTubePlayer.PlayerStateChangeListener playerStateChangeListener = new YouTubePlayer.PlayerStateChangeListener() {
-
-        @Override
-        public void onAdStarted() {
-        }
-
-        @Override
-        public void onError(YouTubePlayer.ErrorReason arg0) {
-        }
-
-        @Override
-        public void onLoaded(String arg0) {
-        }
-
-        @Override
-        public void onLoading() {
-        }
-
-        @Override
-        public void onVideoEnded() {
-        }
-
-        @Override
-        public void onVideoStarted() {
-        }
-    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
-        ListView mListView = (ListView) view.findViewById(R.id.vidListView);
-        loading = (ProgressBar)view.findViewById(R.id.photosLoadingPb);
+        final ListView mListView = (ListView) view.findViewById(R.id.vidListView);
         ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton3);
 
 
@@ -148,10 +85,13 @@ public class VideosFragment extends YouTubePlayerSupportFragment implements YouT
             @Override
             public void done(List<ParseObject> videosList, ParseException e) {
                 if (e == null) {
+                    mVideos.clear();
                     for (int j = 0; j < videosList.size(); j++) {
                         mVideos.add(videosList.get(j));
                     }
-                    query.cancel();
+                    ArrayAdapter<ParseObject> adapter;
+                    adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
+                    mListView.setAdapter(adapter);
                 }
             }
         });
@@ -160,15 +100,8 @@ public class VideosFragment extends YouTubePlayerSupportFragment implements YouT
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loading.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(getActivity(), PostNewActivity.class);
-                startActivity(intent);
             }
         });
-
-        VideosAdapter adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
-
-        mListView.setAdapter(adapter);
 
         return view;
     }
@@ -251,30 +184,79 @@ public class VideosFragment extends YouTubePlayerSupportFragment implements YouT
                         likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
                         currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
                         mWhoLikedList.remove(ParseUser.getCurrentUser());
-                        currentTopImage.put("likeImgPeople", mWhoLikedList);
+                        currentTopImage.put("likeVidPeople", mWhoLikedList);
                     } else {
                         likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
                         currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
                         mWhoLikedList.add(ParseUser.getCurrentUser());
-                        currentTopImage.put("likeImgPeople", mWhoLikedList);
+                        currentTopImage.put("likeVidPeople", mWhoLikedList);
                     }
                     currentTopImage.saveInBackground();
                     likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
                 }
             });
 
-            final String vidURL = currentTopImage.getString("videoURL");
-            final YouTubePlayerView youTubePlayerView = (YouTubePlayerView)row.findViewById(R.id.youtube_player);
-            youTubePlayerView.setOnClickListener(new View.OnClickListener() {
+            final String vidURL = "http://img.youtube.com/vi/"+currentTopImage.getString("videoURL")+"/sddefault.jpg";
+            final ImageView thumbnail = (ImageView)row.findViewById(R.id.videoThumbnail);
+           /* final YouTubeThumbnailView youTubeThumbnailView = (YouTubeThumbnailView)row.findViewById(R.id.youtube_thumbnail);
+            youTubeThumbnailView.initialize(API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
                 @Override
-                public void onClick(View v) {
-                    if (youtubePlayer != null) {
-                        VIDEO_ID = vidURL;
-                        youtubePlayer.play();
-                    }
+                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
+                    Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG);
+                    youTubeThumbnailLoader.setVideo(vidURL);
+                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
+                        @Override
+                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
+                            youTubeThumbnailLoader.release();
+                        }
+
+                        @Override
+                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
+                            youTubeThumbnailView.setImageDrawable(getResources().getDrawable(R.drawable.image_placeholder));
+                        }
+                    });
+                }
+
+                @Override
+                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
+                    Toast.makeText(getActivity(),"Failed",Toast.LENGTH_LONG);
                 }
             });
+            youTubeThumbnailView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                }
+            });*/
+            final Bitmap[] bmp = new Bitmap[1];
+
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        InputStream in = new URL(vidURL).openStream();
+                        bmp[0] = BitmapFactory.decodeStream(in);
+                    } catch (Exception e) {
+                        // log error
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    if (bmp[0] != null)
+                        thumbnail.setImageBitmap(bmp[0]);
+                }
+
+            }.execute();
+
+            thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, VideoPlayerFragment.newInstance(currentTopImage.getString("videoURL"))).commit();
+                }
+            });
             return row;
         }
     }
