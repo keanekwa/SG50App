@@ -1,6 +1,7 @@
 package com.example.user.sg50app;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -23,6 +26,7 @@ import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +36,7 @@ public class UserContentFragment extends Fragment {
     private static ArrayList<String> LIST_OF_PAGES;
     public static ArrayList<ParseObject> mPHOTOS;
     public static ArrayList<ParseObject> mWISHES;
+    View mTextEntryView;
 
     private ListView mWishListView;
     private GridView mPhotoGridView;
@@ -307,5 +312,45 @@ public class UserContentFragment extends Fragment {
         }
 
 
+    }
+
+    public void Dialog() {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        mTextEntryView = factory.inflate(R.layout.post_new_want, null);
+        Button pbutton = (Button)mTextEntryView.findViewById(R.id.finalizeButton);
+        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton);
+
+        final Dialog alert = new Dialog(getActivity());
+        alert.setTitle("New Post");
+        alert.setContentView(mTextEntryView);
+
+        pbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                positiveButton();
+                alert.dismiss();
+            }
+        });
+        nbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void positiveButton() {
+        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
+        String post = mPostField.getText().toString();
+        ParseObject postObject = new ParseObject("onNationalDay");
+        postObject.put("postTitle",post);
+        postObject.put("likeNumber",0);
+        postObject.put("createdBy", ParseUser.getCurrentUser().getUsername());
+        postObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
