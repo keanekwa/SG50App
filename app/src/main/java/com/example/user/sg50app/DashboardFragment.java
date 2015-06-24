@@ -2,13 +2,24 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.app.Dialog;
+<<<<<<< HEAD
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+=======
+import android.content.Intent;
+import android.graphics.Point;
+import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
+>>>>>>> origin/master
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -267,6 +278,54 @@ public class DashboardFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void photoDialog() {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        mTextEntryView = factory.inflate(R.layout.individual_photo, null);
+        Button pbutton = (Button)mTextEntryView.findViewById(R.id.finalizeButton);
+        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton);
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        final Dialog alert = new Dialog(getActivity());
+        WindowManager.LayoutParams layoutParams = alert.getWindow().getAttributes();
+        layoutParams.height=size.y;
+        layoutParams.width=size.x;
+        layoutParams.gravity= Gravity.TOP | Gravity.LEFT;
+        alert.getWindow().setAttributes(layoutParams);
+        alert.setTitle("New Post");
+        alert.setContentView(mTextEntryView);
+
+        pbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                positiveButton();
+                alert.dismiss();
+            }
+        });
+        nbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void positiveButton2() {
+        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
+        String post = mPostField.getText().toString();
+        ParseObject postObject = new ParseObject("onNationalDay");
+        postObject.put("postTitle",post);
+        postObject.put("likeNumber",0);
+        postObject.put("createdBy", ParseUser.getCurrentUser().getUsername());
+        postObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
+
             }
         });
     }

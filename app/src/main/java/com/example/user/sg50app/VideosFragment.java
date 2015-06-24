@@ -1,6 +1,7 @@
 package com.example.user.sg50app;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -13,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -20,20 +23,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.youtube.player.YouTubeInitializationResult;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.android.youtube.player.YouTubePlayerFragment;
-import com.google.android.youtube.player.YouTubePlayerSupportFragment;
-import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.android.youtube.player.YouTubeThumbnailLoader;
-import com.google.android.youtube.player.YouTubeThumbnailView;
 import com.parse.FindCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -54,7 +49,7 @@ public class VideosFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    View mTextEntryView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,6 +95,7 @@ public class VideosFragment extends Fragment {
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Dialog();
             }
         });
 
@@ -259,5 +255,44 @@ public class VideosFragment extends Fragment {
             });
             return row;
         }
+    }
+
+    public void Dialog() {
+        LayoutInflater factory = LayoutInflater.from(getActivity());
+        mTextEntryView = factory.inflate(R.layout.suggest_new_videos, null);
+        Button pbutton = (Button)mTextEntryView.findViewById(R.id.suggestButton);
+        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton2);
+
+        final Dialog alert = new Dialog(getActivity());
+        alert.setTitle("New Suggestion");
+        alert.setContentView(mTextEntryView);
+
+        pbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                positiveButton();
+                alert.dismiss();
+            }
+        });
+        nbutton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                alert.dismiss();
+            }
+        });
+        alert.show();
+    }
+
+    public void positiveButton() {
+        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.suggestEditText);
+        String post = mPostField.getText().toString();
+        ParseObject postObject = new ParseObject("suggestionsFromUsers");
+        postObject.put("suggestion", post);
+        postObject.put("submittedBy", ParseUser.getCurrentUser().getUsername());
+        postObject.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(getActivity(), "Suggested!", Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
