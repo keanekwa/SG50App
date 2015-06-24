@@ -2,10 +2,10 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.Intent;
+import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +69,24 @@ public class DashboardFragment extends Fragment {
         loading.setVisibility(View.VISIBLE);
         Activity activity = getActivity();
         if(activity != null) {
+            TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
+            TextView dayNo = (TextView) view.findViewById(R.id.dayNo);
+            TextView hourNo = (TextView) view.findViewById(R.id.hourNo);
+            TextView minuteNo = (TextView) view.findViewById(R.id.minuteNo);
+            TextView secondNo = (TextView) view.findViewById(R.id.secondNo);
+            noOfPhotos = (TextView) view.findViewById(R.id.photoNo);
+            noOfPosts = (TextView) view.findViewById(R.id.postNo);
+            Typeface custom_font = Typeface.createFromAsset(activity.getAssets(), "fonts/Din.ttf");
+            dayNo.setTypeface(custom_font);
+            hourNo.setTypeface(custom_font);
+            minuteNo.setTypeface(custom_font);
+            secondNo.setTypeface(custom_font);
+            countdownTitle.setTypeface(custom_font);
+            noOfPhotos.setTypeface(custom_font);
+            noOfPosts.setTypeface(custom_font);
+            final TextView noOfUserPhotos = (TextView) view.findViewById(R.id.userPhotoNo);
+            final TextView noOfUserPosts = (TextView) view.findViewById(R.id.userPostNo);
+
             slidingimage = (ParseImageView) view.findViewById(R.id.imageOfTheDay);
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
             query.addDescendingOrder("likeNumber");
@@ -77,8 +95,7 @@ public class DashboardFragment extends Fragment {
                     if (e == null) {
                         // The count request succeeded. Log the count
                         totalPostings = count;
-                        noOfPhotos = (TextView) view.findViewById(R.id.photoNo);
-                        photoNo = totalPostings.toString() + " Photos";
+                        photoNo = totalPostings.toString();
                         noOfPhotos.setText(photoNo);
                         query.cancel();
                         query.setLimit(5);
@@ -130,15 +147,39 @@ public class DashboardFragment extends Fragment {
                     if (e == null) {
                         // The count request succeeded. Log the count
                         totalPosts = count;
-                        noOfPosts = (TextView) view.findViewById(R.id.postNo);
-                        postNo = totalPosts.toString() + " Wishes";
+                        postNo = totalPosts.toString();
                         noOfPosts.setText(postNo);
                         query2.cancel();
                     }
                 }
             });
 
-            postPhoto = (Button) view.findViewById(R.id.photoButton);
+            final ParseQuery<ParseObject> query3 = ParseQuery.getQuery("allPostings");
+            query3.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+            query3.countInBackground(new CountCallback() {
+                public void done(int count, ParseException e) {
+                    if (e == null) {
+                        noOfUserPosts.setText(Integer.toString(count));
+                        query3.cancel();
+                    }
+                }
+            });
+
+            final ParseQuery<ParseObject> query4 = ParseQuery.getQuery("onNationalDay");
+            query4.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+            query4.countInBackground(new CountCallback() {
+                public void done(int count, ParseException e) {
+                    if (e == null) {
+                        noOfUserPosts.setText(Integer.toString(count));
+                        query4.cancel();
+                    }
+                }
+            });
+
+            TextView profileTitle = (TextView) view.findViewById(R.id.profileTitle);
+            profileTitle.setText(ParseUser.getCurrentUser().getUsername() + "\'s Profile");
+
+            /*postPhoto = (Button) view.findViewById(R.id.photoButton);
             postPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,7 +193,7 @@ public class DashboardFragment extends Fragment {
                 public void onClick(View v) {
                     Dialog();
                 }
-            });
+            });*/
         }
             return view;
 

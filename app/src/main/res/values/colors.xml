@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="singapics_red" type="color">#ffe74c3c</item>
+    <item name="light_red" type="color">#ffF85B4A</item>
+    <item name="red" type="color">#ffe74c3c</item>
+    <item name="dark_red" type="color">#ffD34434</item>
     <item name="white" type="color">#ffffffff</item>
     <item name="translucent_white" type="color">#ccffffff</item>
     <item name="grey" type="color">#cccc</item>
+    <item name="translucent_black" type="color">#33000000</item>
 
 </resources>

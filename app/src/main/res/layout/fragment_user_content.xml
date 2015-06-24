@@ -22,7 +22,7 @@
             android:id="@+id/userPhotoButton"
             android:textSize="16dp"
             android:textColor="#ffffff"
-            android:background="@color/singapics_red"
+            android:background="@color/red"
             android:padding="10dp" />
 
         <Button
@@ -33,7 +33,7 @@
             android:id="@+id/userWishButton"
             android:textSize="15dp"
             android:textAlignment="center"
-            android:background="@color/singapics_red"
+            android:background="@color/red"
             android:textColor="#ffffff" />
 
     </LinearLayout>
