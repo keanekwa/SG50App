@@ -1,13 +1,17 @@
 package com.example.user.sg50app;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -18,8 +22,10 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
+import com.parse.LogOutCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -79,9 +85,11 @@ public class PhotosFragment extends Fragment {
         presentButton = (Button)view.findViewById(R.id.presentButton);
         futureButton = (Button)view.findViewById(R.id.futureButton);
         loading = (ProgressBar)view.findViewById(R.id.photosLoadingPb);
-        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton2);
-        ImageButton sortImageButton = (ImageButton)view.findViewById(R.id.sortPhotosImageButton);
-
+        FloatingActionButton fabImageButton = (FloatingActionButton) view.findViewById(R.id.action_a);
+        FloatingActionButton searchButton = (FloatingActionButton)view.findViewById(R.id.action_b);
+        FloatingActionButton sortImageButton = (FloatingActionButton)view.findViewById(R.id.action_c);
+        MainActivity.YOrN = true;
+        MainActivity.origin = "PF";
         toSortTopBy = "likeNumber";
 
         topButton.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +149,7 @@ public class PhotosFragment extends Fragment {
         if (fromSplashScreen){
             setPhotosList();
         }
-        else loadPhotos();
+        else loadPhotos(true);
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,6 +157,14 @@ public class PhotosFragment extends Fragment {
                 loading.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(getActivity(),PostNewActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance("PF")).commit();
             }
         });
 
@@ -185,6 +201,8 @@ public class PhotosFragment extends Fragment {
         super.onAttach(activity);
     }
 
+
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -204,7 +222,7 @@ public class PhotosFragment extends Fragment {
                         topButton.setText("Top Photos");
                         break;
                 }
-                loadPhotos();
+                loadPhotos(true);
                 break;
             case "Best Of The Past":
                 switch (key){
@@ -251,6 +269,8 @@ public class PhotosFragment extends Fragment {
         }
         loading.setVisibility(View.GONE);
     }
+
+
 
     public void setCurrentPage(String pageToSet){
         if (!LIST_OF_PAGES.contains(pageToSet)) {
@@ -303,6 +323,7 @@ public class PhotosFragment extends Fragment {
     }
 
     public void setPhotosList() {
+        if(getActivity()==null) return;
         loading.setVisibility(View.VISIBLE);
         PhotosAdapter adapter;
         switch(currentPage) {
@@ -327,7 +348,7 @@ public class PhotosFragment extends Fragment {
         //lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     }
 
-    public void loadPhotos() {
+    public void loadPhotos(final Boolean toSetList) {
         if(toSortTopBy==null) toSortTopBy = "likeNumber";
         loading.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
@@ -341,7 +362,7 @@ public class PhotosFragment extends Fragment {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mTOP.add(parseObjects.get(j));
                         if (mTOP.size() == 15) {
-                            if (currentPage.equals(TOP_PHOTOS_STRING)) setPhotosList();
+                            if (currentPage.equals(TOP_PHOTOS_STRING) && toSetList) setPhotosList();
                             ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
                             query2.addDescendingOrder("createdAt");
                             query2.findInBackground(new FindCallback<ParseObject>() {
@@ -364,7 +385,7 @@ public class PhotosFragment extends Fragment {
                                                 break;
                                         }
                                     }
-                                    setPhotosList();
+                                    if (toSetList) setPhotosList();
                                 }
                             });
                             break;
@@ -375,20 +396,6 @@ public class PhotosFragment extends Fragment {
             }
         });
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-
-     public interface OnPhotosInteractionListener {
-        public void refreshPhotos();
-     }*/
 
     private class PhotosAdapter extends ArrayAdapter<ParseObject> {
         //creating variables

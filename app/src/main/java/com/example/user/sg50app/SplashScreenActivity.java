@@ -112,14 +112,32 @@ public class SplashScreenActivity extends Activity {
                                             for (int j = 0; j < parseObjects.size(); j++) {
                                                 OnNatDayFragment.mPosts.add(parseObjects.get(j));
                                             }
-                                            Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
-                                            startActivity(i);
+                                            loadVideos();
                                         }
                                     }
                                 });
                             }
                         }
                     });
+                }
+            }
+        });
+    }
+
+    private void loadVideos(){
+        VideosFragment.mVideos = new ArrayList<>();
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
+        query.addDescendingOrder("createdAt");
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> videosList, ParseException e) {
+                if (e == null) {
+                    for (int j = 0; j < videosList.size(); j++) {
+                        VideosFragment.mVideos.add(videosList.get(j));
+                    }
+                    Intent i = new Intent(SplashScreenActivity.this, MainActivity.class);
+                    startActivity(i);
                 }
             }
         });

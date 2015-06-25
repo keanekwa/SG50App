@@ -11,10 +11,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="center">
 
-        <ImageView
+        <com.parse.ParseImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/topImgView"
+            android:id="@+id/indImgView"
             android:scaleType="centerCrop"
             android:adjustViewBounds="false"
             android:contentDescription="@string/stuff"
@@ -30,7 +30,8 @@
             android:layout_height="102dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/indImgView">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -48,7 +49,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:id="@+id/likeImageView"
+                    android:id="@+id/likeImageViewI"
                     android:src="@drawable/like_outline"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
@@ -58,13 +59,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="123 likes"
-                    android:id="@+id/likeNumber"
+                    android:id="@+id/likeNumberI"
                     android:textColor="#666"
-                    android:layout_marginLeft="10dp"
                     android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/likeImageView"
-                    android:layout_toEndOf="@+id/likeImageView"
-                    />
+                    android:layout_toRightOf="@+id/likeImageViewI"
+                    android:layout_toEndOf="@+id/likeImageViewI"
+                    android:layout_marginLeft="5dp" />
 
             </RelativeLayout>
 
@@ -72,45 +72,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="SG so nice"
-                android:id="@+id/imgTitle"
-                android:textSize="18dp"
+                android:id="@+id/imgTitleI"
+                android:textSize="25dp"
                 android:textColor="@color/red"
                 android:gravity="bottom"
-                android:layout_above="@+id/imageCategory"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="15dp" />
+                android:layout_above="@+id/imageCategoryI"
+                android:layout_alignLeft="@+id/imageCategoryI"
+                android:layout_alignStart="@+id/imageCategoryI" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Category: Some Category"
-                android:id="@+id/imageCategory"
+                android:id="@+id/imageCategoryI"
                 android:textColor="#666"
                 android:gravity="bottom"
-                android:layout_above="@+id/photoBy"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="15dp" />
+                android:layout_above="@+id/photoByI"
+                android:layout_alignLeft="@+id/photoByI"
+                android:layout_alignStart="@+id/photoByI"
+                android:textSize="15dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Photo by John Smith"
-                android:id="@+id/photoBy"
+                android:id="@+id/photoByI"
                 android:textColor="#666"
                 android:gravity="bottom"
                 android:layout_above="@+id/relativeLayout4"
                 android:layout_alignRight="@+id/imgTitle"
                 android:layout_alignEnd="@+id/imgTitle"
-                android:layout_marginLeft="15dp" />
+                android:layout_marginLeft="15dp"
+                android:textSize="15dp"
+                android:layout_marginBottom="10dp" />
         </RelativeLayout>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Back"
-            android:id="@+id/button"
+            android:id="@+id/backButton2"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />

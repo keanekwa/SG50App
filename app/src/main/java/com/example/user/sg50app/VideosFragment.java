@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -55,9 +56,6 @@ public class VideosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mVideos == null){
-            mVideos = new ArrayList<>();
-        }
     }
 
     @Override
@@ -67,15 +65,28 @@ public class VideosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         mListView = (ListView) view.findViewById(R.id.vidListView);
         loading = (ProgressBar)view.findViewById(R.id.vidsLoadingPb);
-        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton3);
-        ImageButton sortButton = (ImageButton) view.findViewById(R.id.sortVideosImageButton);
+        FloatingActionButton fabImageButton = (FloatingActionButton) view.findViewById(R.id.action_a2);
+        FloatingActionButton searchButton = (FloatingActionButton)view.findViewById(R.id.action_b2);
+        FloatingActionButton sortButton = (FloatingActionButton) view.findViewById(R.id.action_c2);
 
-        refreshVideos();
+        if(mVideos==null) {
+            mVideos = new ArrayList<>();
+            refreshVideos(true);
+        }
+        else setVideosList();
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog();
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance("VF")).commit();
             }
         });
 
@@ -101,7 +112,7 @@ public class VideosFragment extends Fragment {
                                 toSortBy = "likeNumber";
                                 break;
                         }
-                        refreshVideos();
+                        refreshVideos(true);
                     }
                 });
             }
@@ -120,7 +131,7 @@ public class VideosFragment extends Fragment {
         super.onDetach();
     }
 
-    public void refreshVideos(){
+    public void refreshVideos(final Boolean toSetList){
         loading.setVisibility(View.VISIBLE);
         if(toSortBy==null) toSortBy="createdAt";
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
@@ -134,13 +145,14 @@ public class VideosFragment extends Fragment {
                     for (int j = 0; j < videosList.size(); j++) {
                         mVideos.add(videosList.get(j));
                     }
-                    setVideosList();
+                    if(toSetList) setVideosList();
                 }
             }
         });
     }
 
     public void setVideosList(){
+        if(getActivity()==null) return;
         ArrayAdapter<ParseObject> adapter;
         adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
         mListView.setAdapter(adapter);
@@ -226,36 +238,6 @@ public class VideosFragment extends Fragment {
 
             final String vidURL = "http://img.youtube.com/vi/"+currentTopImage.getString("videoURL")+"/sddefault.jpg";
             final ImageView thumbnail = (ImageView)row.findViewById(R.id.videoThumbnail);
-           /* final YouTubeThumbnailView youTubeThumbnailView = (YouTubeThumbnailView)row.findViewById(R.id.youtube_thumbnail);
-            youTubeThumbnailView.initialize(API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                    Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG);
-                    youTubeThumbnailLoader.setVideo(vidURL);
-                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-                        @Override
-                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                            youTubeThumbnailLoader.release();
-                        }
-
-                        @Override
-                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-                            youTubeThumbnailView.setImageDrawable(getResources().getDrawable(R.drawable.image_placeholder));
-                        }
-                    });
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                    Toast.makeText(getActivity(),"Failed",Toast.LENGTH_LONG);
-                }
-            });
-            youTubeThumbnailView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });*/
             final Bitmap[] bmp = new Bitmap[1];
 
             new AsyncTask<Void, Void, Void>() {

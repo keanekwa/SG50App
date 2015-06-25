@@ -24,7 +24,7 @@
         android:background="@drawable/loginedittexttopcurve"
         android:textColor="#fff"
         android:textColorHint="#ecf0f1"
-        />
+        android:maxLines="1" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -45,7 +45,8 @@
         android:password="false"
         android:textColor="#fff"
         android:textColorHint="#ecf0f1"
-        android:fontFamily="Roboto" />
+        android:fontFamily="Roboto"
+        android:maxLines="1" />
 
     <Button
         android:layout_width="wrap_content"

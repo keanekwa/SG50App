@@ -34,12 +34,16 @@ public class MainActivity extends ActionBarActivity
     private static UserContentFragment mUserContentFragment;
     private static OnNatDayFragment mOnNatDayFragment;
     private static VideosFragment mVideosFragment;
+    public static Boolean YOrN = false;
+    public static String origin;
+    private int mCurrentFrag;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mCurrentFrag = 0;
 
         if(ParseUser.getCurrentUser()==null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -47,8 +51,9 @@ public class MainActivity extends ActionBarActivity
         }
 
         Intent infoIntent = getIntent();
-        if(infoIntent.getBooleanExtra("toRefreshPhotos", false) && mPhotosFragment!=null){
-            mPhotosFragment.loadPhotos();
+        if(infoIntent.getBooleanExtra("toRefreshPhotos", false)){
+            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos(false);
+            if(mUserContentFragment!=null) mUserContentFragment.refresh(false);
         }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -64,6 +69,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Fragment newFragment = null;
+        mCurrentFrag = position;
 
         switch (position) {
             case 0:
@@ -109,13 +115,9 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -145,12 +147,25 @@ public class MainActivity extends ActionBarActivity
         }
 
         if (id == R.id.action_refresh){
-            //if(mDashboardFragment!=null) mDashboardFragment.refresh();
-            if(mUserContentFragment!=null) mUserContentFragment.refresh();
-            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos();
-            if(mOnNatDayFragment!=null) mOnNatDayFragment.refreshOnNatDay();
-            if(mVideosFragment!=null) mVideosFragment.refreshVideos();
+            if(mDashboardFragment!=null) mDashboardFragment.recount();
+            if(mUserContentFragment!=null) {
+                if(mCurrentFrag==1) mUserContentFragment.refresh(true);
+                else mUserContentFragment.refresh(false);
+            }
+            if(mPhotosFragment!=null) {
+                if(mCurrentFrag==2) mPhotosFragment.loadPhotos(true);
+                else mPhotosFragment.loadPhotos(false);
+            }
+            if(mOnNatDayFragment!=null) {
+                if(mCurrentFrag==3) mOnNatDayFragment.refreshOnNatDay(true);
+                else mOnNatDayFragment.refreshOnNatDay(false);
+            }
+            if(mVideosFragment!=null) {
+                if(mCurrentFrag==4) mVideosFragment.refreshVideos(true);
+                else mVideosFragment.refreshVideos(false);
+            }
         }
+
 
         return super.onOptionsItemSelected(item);
     }
