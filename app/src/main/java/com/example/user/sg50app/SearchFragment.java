@@ -129,7 +129,7 @@ public class SearchFragment extends Fragment {
     }
     public void setContentList() {
         loading.setVisibility(View.VISIBLE);
-                PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.user_photos_list, mRESULTS);
+                PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.photos_list, mRESULTS);
                 mPhotoGridView.setVisibility(View.VISIBLE);
                 mPhotoGridView.setAdapter(adapter);
         loading.setVisibility(View.GONE);
