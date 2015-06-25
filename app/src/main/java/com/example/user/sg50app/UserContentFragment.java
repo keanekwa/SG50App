@@ -115,7 +115,7 @@ public class UserContentFragment extends Fragment {
         }
 
         if(hasLoaded) setContentList();
-        else refresh();
+        else refresh(true);
         loading.setVisibility(View.GONE);
 
         return view;
@@ -132,7 +132,7 @@ public class UserContentFragment extends Fragment {
         }
     }
 
-    public void refresh(){
+    public void refresh(final Boolean toSetList){
         loading.setVisibility(View.VISIBLE);
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
         query.addDescendingOrder("createdAt");
@@ -154,7 +154,7 @@ public class UserContentFragment extends Fragment {
                                 for (int j = 0; j < parseObjects.size(); j++) {
                                     mWISHES.add(parseObjects.get(j));
                                 }
-                                setContentList();
+                                if(toSetList) setContentList();
                             }
                         }
                     });
