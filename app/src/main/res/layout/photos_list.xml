@@ -53,7 +53,7 @@
         android:layout_height="wrap_content"
         android:text="SG so nice"
         android:id="@+id/imgTitle"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

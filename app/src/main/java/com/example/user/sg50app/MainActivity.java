@@ -34,14 +34,19 @@ public class MainActivity extends ActionBarActivity
     private static UserContentFragment mUserContentFragment;
     private static OnNatDayFragment mOnNatDayFragment;
     private static VideosFragment mVideosFragment;
+<<<<<<< HEAD
     public static Boolean YOrN = false;
     public static String origin;
+=======
+    private int mCurrentFrag;
+>>>>>>> origin/master
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mCurrentFrag = 0;
 
         if(ParseUser.getCurrentUser()==null){
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -49,8 +54,9 @@ public class MainActivity extends ActionBarActivity
         }
 
         Intent infoIntent = getIntent();
-        if(infoIntent.getBooleanExtra("toRefreshPhotos", false) && mPhotosFragment!=null){
-            mPhotosFragment.loadPhotos();
+        if(infoIntent.getBooleanExtra("toRefreshPhotos", false)){
+            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos(false);
+            if(mUserContentFragment!=null) mUserContentFragment.refresh(false);
         }
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -66,6 +72,7 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         Fragment newFragment = null;
+        mCurrentFrag = position;
 
         switch (position) {
             case 0:
@@ -128,11 +135,6 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            /* todo add settings activity Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            MainActivity.this.startActivity(intent);*/
-        }
-
         if (id == R.id.action_logout) {
             final ProgressDialog mLogoutLoader = new ProgressDialog(MainActivity.this);
             mLogoutLoader.setMessage(getString(R.string.logout_dialog_message));
@@ -148,11 +150,23 @@ public class MainActivity extends ActionBarActivity
         }
 
         if (id == R.id.action_refresh){
-            //if(mDashboardFragment!=null) mDashboardFragment.refresh();
-            if(mUserContentFragment!=null) mUserContentFragment.refresh();
-            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos();
-            if(mOnNatDayFragment!=null) mOnNatDayFragment.refreshOnNatDay();
-            if(mVideosFragment!=null) mVideosFragment.refreshVideos();
+            if(mDashboardFragment!=null) mDashboardFragment.recount();
+            if(mUserContentFragment!=null) {
+                if(mCurrentFrag==1) mUserContentFragment.refresh(true);
+                else mUserContentFragment.refresh(false);
+            }
+            if(mPhotosFragment!=null) {
+                if(mCurrentFrag==2) mPhotosFragment.loadPhotos(true);
+                else mPhotosFragment.loadPhotos(false);
+            }
+            if(mOnNatDayFragment!=null) {
+                if(mCurrentFrag==3) mOnNatDayFragment.refreshOnNatDay(true);
+                else mOnNatDayFragment.refreshOnNatDay(false);
+            }
+            if(mVideosFragment!=null) {
+                if(mCurrentFrag==4) mVideosFragment.refreshVideos(true);
+                else mVideosFragment.refreshVideos(false);
+            }
         }
 
 

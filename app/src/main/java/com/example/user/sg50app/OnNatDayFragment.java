@@ -6,9 +6,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,7 +56,7 @@ public class OnNatDayFragment extends Fragment {
 
         if(mPosts==null){
             mPosts = new ArrayList<>();
-            refreshOnNatDay();
+            refreshOnNatDay(true);
         }
         else setListNatDay();
 
@@ -70,7 +70,7 @@ public class OnNatDayFragment extends Fragment {
         return view;
     }
 
-    public void refreshOnNatDay(){
+    public void refreshOnNatDay(final Boolean toSetList){
         loading.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
         query.addDescendingOrder("createdAt");
@@ -81,13 +81,14 @@ public class OnNatDayFragment extends Fragment {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPosts.add(parseObjects.get(j));
                     }
-                    setListNatDay();
+                    if(toSetList) setListNatDay();
                 }
             }
         });
     }
 
     public void setListNatDay(){
+        if(getActivity()==null) return;
         loading.setVisibility(View.VISIBLE);
         ArrayAdapter<ParseObject> adapter;
         adapter = new wantAdapter(getActivity(), R.layout.want_list, mPosts);
@@ -195,7 +196,7 @@ public class OnNatDayFragment extends Fragment {
             Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton);
 
             final Dialog alert = new Dialog(getActivity());
-            alert.setTitle("New Post");
+            alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
             alert.setContentView(mTextEntryView);
 
             pbutton.setOnClickListener(new View.OnClickListener() {
