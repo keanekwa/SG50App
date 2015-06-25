@@ -201,9 +201,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/dashboardLoading"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:indeterminate="false"/>
+                    android:layout_alignParentBottom="false"
+                    android:indeterminate="false"
+                    android:layout_centerInParent="true"/>
 
             </RelativeLayout>
 
@@ -390,7 +390,7 @@
                     android:layout_height="wrap_content"
                     android:text="No. of Wishes Posted"
                     android:textAllCaps="true"
-                    android:id="@+id/textView4"
+                    android:id="@+id/themeTextView"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
