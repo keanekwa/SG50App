@@ -228,36 +228,6 @@ public class VideosFragment extends Fragment {
 
             final String vidURL = "http://img.youtube.com/vi/"+currentTopImage.getString("videoURL")+"/sddefault.jpg";
             final ImageView thumbnail = (ImageView)row.findViewById(R.id.videoThumbnail);
-           /* final YouTubeThumbnailView youTubeThumbnailView = (YouTubeThumbnailView)row.findViewById(R.id.youtube_thumbnail);
-            youTubeThumbnailView.initialize(API_KEY, new YouTubeThumbnailView.OnInitializedListener() {
-                @Override
-                public void onInitializationSuccess(YouTubeThumbnailView youTubeThumbnailView, final YouTubeThumbnailLoader youTubeThumbnailLoader) {
-                    Toast.makeText(getActivity(),"Success",Toast.LENGTH_LONG);
-                    youTubeThumbnailLoader.setVideo(vidURL);
-                    youTubeThumbnailLoader.setOnThumbnailLoadedListener(new YouTubeThumbnailLoader.OnThumbnailLoadedListener() {
-                        @Override
-                        public void onThumbnailLoaded(YouTubeThumbnailView youTubeThumbnailView, String s) {
-                            youTubeThumbnailLoader.release();
-                        }
-
-                        @Override
-                        public void onThumbnailError(YouTubeThumbnailView youTubeThumbnailView, YouTubeThumbnailLoader.ErrorReason errorReason) {
-                            youTubeThumbnailView.setImageDrawable(getResources().getDrawable(R.drawable.image_placeholder));
-                        }
-                    });
-                }
-
-                @Override
-                public void onInitializationFailure(YouTubeThumbnailView youTubeThumbnailView, YouTubeInitializationResult youTubeInitializationResult) {
-                    Toast.makeText(getActivity(),"Failed",Toast.LENGTH_LONG);
-                }
-            });
-            youTubeThumbnailView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });*/
             final Bitmap[] bmp = new Bitmap[1];
 
             new AsyncTask<Void, Void, Void>() {

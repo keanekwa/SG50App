@@ -34,6 +34,8 @@ public class MainActivity extends ActionBarActivity
     private static UserContentFragment mUserContentFragment;
     private static OnNatDayFragment mOnNatDayFragment;
     private static VideosFragment mVideosFragment;
+    public static Boolean YOrN = false;
+    public static String origin;
 
 
     @Override
@@ -109,13 +111,9 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
             getMenuInflater().inflate(R.menu.main, menu);
             restoreActionBar();
             return true;
@@ -156,6 +154,7 @@ public class MainActivity extends ActionBarActivity
             if(mOnNatDayFragment!=null) mOnNatDayFragment.refreshOnNatDay();
             if(mVideosFragment!=null) mVideosFragment.refreshVideos();
         }
+
 
         return super.onOptionsItemSelected(item);
     }
