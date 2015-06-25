@@ -1,12 +1,12 @@
 package com.example.user.sg50app;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
@@ -31,7 +30,6 @@ import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +42,7 @@ public class SearchFragment extends Fragment {
     EditText searchText;
     private ProgressBar loading;
     ImageButton confirmButton;
+    ImageButton backButton;
     String searchQuery;
     static String originator;
 
@@ -75,9 +74,10 @@ public class SearchFragment extends Fragment {
         }
         mPhotoGridView = (GridView) view.findViewById(R.id.searchGridView);
         loading = (ProgressBar) view.findViewById(R.id.progressBar3);
-        loading.setVisibility(View.VISIBLE);
+        loading.setVisibility(View.INVISIBLE);
         searchText = (EditText)view.findViewById(R.id.searchText);
         confirmButton = (ImageButton)view.findViewById(R.id.confirm_search);
+        backButton = (ImageButton)view.findViewById(R.id.backArrow);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +85,21 @@ public class SearchFragment extends Fragment {
                 mRESULTS.clear();
                 searchQuery = searchText.getText().toString().toLowerCase();
                 searchText.setText("");
-                search();
+                switch (originator){
+                    case "PF":
+                    searchPhotos();
+                        break;
+
+
+                }
+            }
+        });
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, PhotosFragment.newInstance()).commit();
             }
         });
 
@@ -95,7 +109,7 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    public void search(){
+    public void searchPhotos(){
         loading.setVisibility(View.VISIBLE);
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
         query.addDescendingOrder("createdAt");

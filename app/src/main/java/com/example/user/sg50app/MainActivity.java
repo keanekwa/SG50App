@@ -34,12 +34,9 @@ public class MainActivity extends ActionBarActivity
     private static UserContentFragment mUserContentFragment;
     private static OnNatDayFragment mOnNatDayFragment;
     private static VideosFragment mVideosFragment;
-<<<<<<< HEAD
     public static Boolean YOrN = false;
     public static String origin;
-=======
     private int mCurrentFrag;
->>>>>>> origin/master
 
 
     @Override

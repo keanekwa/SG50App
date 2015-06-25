@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -64,8 +65,9 @@ public class VideosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
         mListView = (ListView) view.findViewById(R.id.vidListView);
         loading = (ProgressBar)view.findViewById(R.id.vidsLoadingPb);
-        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton3);
-        ImageButton sortButton = (ImageButton) view.findViewById(R.id.sortVideosImageButton);
+        FloatingActionButton fabImageButton = (FloatingActionButton) view.findViewById(R.id.action_a2);
+        FloatingActionButton searchButton = (FloatingActionButton)view.findViewById(R.id.action_b2);
+        FloatingActionButton sortButton = (FloatingActionButton) view.findViewById(R.id.action_c2);
 
         if(mVideos==null) {
             mVideos = new ArrayList<>();
@@ -77,6 +79,14 @@ public class VideosFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Dialog();
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance("VF")).commit();
             }
         });
 
