@@ -160,6 +160,7 @@ public class DashboardFragment extends Fragment {
             TextView profileTitle = (TextView) view.findViewById(R.id.profileTitle);
             profileTitle.setText(ParseUser.getCurrentUser().getUsername() + "\'s Profile");
         }
+        recount();
         return view;
     }
 
@@ -172,7 +173,7 @@ public class DashboardFragment extends Fragment {
                     // The count request succeeded. Log the count
                     totalPostings = count;
                     photoNo = totalPostings.toString();
-                    noOfPhotos.setText(photoNo);
+                    if(noOfPhotos!=null) noOfPhotos.setText(photoNo);
                     query.cancel();
                 }
             }
@@ -185,7 +186,7 @@ public class DashboardFragment extends Fragment {
                     // The count request succeeded. Log the count
                     totalPosts = count;
                     postNo = totalPosts.toString();
-                    noOfPosts.setText(postNo);
+                    if(noOfPosts!=null) noOfPosts.setText(postNo);
                     query2.cancel();
                 }
             }
@@ -196,7 +197,7 @@ public class DashboardFragment extends Fragment {
         query3.countInBackground(new CountCallback() {
             public void done(int count, ParseException e) {
                 if (e == null) {
-                    noOfUserPhotos.setText(Integer.toString(count));
+                    if(noOfUserPhotos!=null) noOfUserPhotos.setText(Integer.toString(count));
                     query3.cancel();
                 }
             }
@@ -207,7 +208,7 @@ public class DashboardFragment extends Fragment {
         query4.countInBackground(new CountCallback() {
             public void done(int count, ParseException e) {
                 if (e == null) {
-                    noOfUserPosts.setText(Integer.toString(count));
+                    if(noOfUserPosts!=null) noOfUserPosts.setText(Integer.toString(count));
                     query4.cancel();
                 }
             }
