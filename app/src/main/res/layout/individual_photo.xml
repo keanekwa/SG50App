@@ -74,7 +74,7 @@
                 android:text="SG so nice"
                 android:id="@+id/imgTitle"
                 android:textSize="18dp"
-                android:textColor="@color/singapics_red"
+                android:textColor="@color/red"
                 android:gravity="bottom"
                 android:layout_above="@+id/imageCategory"
                 android:layout_alignParentLeft="true"
