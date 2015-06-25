@@ -20,7 +20,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +80,7 @@ public class DashboardFragment extends Fragment {
         loading.setVisibility(View.VISIBLE);
         Activity activity = getActivity();
         if(activity != null) {
-            TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
+            final TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
             final TextView dayNo = (TextView) view.findViewById(R.id.dayNo);
             final TextView hourNo = (TextView) view.findViewById(R.id.hourNo);
             final TextView minuteNo = (TextView) view.findViewById(R.id.minuteNo);
@@ -95,10 +97,11 @@ public class DashboardFragment extends Fragment {
             noOfPosts.setTypeface(custom_font);
             final TextView noOfUserPhotos = (TextView) view.findViewById(R.id.userPhotoNo);
             final TextView noOfUserPosts = (TextView) view.findViewById(R.id.userPostNo);
+            final LinearLayout countdownLinearLayout = (LinearLayout) view.findViewById(R.id.countdownLinearLayout);
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Singapore"));
             final long nowTime = calendar.getTimeInMillis();
-            final long ndpTime = 1439049600000L;
+            final long ndpTime = 0; //1439049600000L
             long countdownTime = ndpTime-nowTime;
             new CountDownTimer(countdownTime, 1000) {
                  public void onTick(long millisUntilFinished) {
@@ -113,7 +116,13 @@ public class DashboardFragment extends Fragment {
                     secondNo.setText(DateFormat.format("ss", millisUntilFinished));
                 }
                 public void onFinish() {
-
+                    countdownLinearLayout.setVisibility(View.INVISIBLE);
+                    countdownTitle.setText("Happy 50th Birthday, Singapore!!!");
+                    countdownTitle.setTextSize(28);
+                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                    params.setMargins(0, 0, 0, 0);
+                    countdownTitle.setLayoutParams(params);
+                    countdownTitle.setGravity(Gravity.CENTER);
                 }
             }.start();
 
