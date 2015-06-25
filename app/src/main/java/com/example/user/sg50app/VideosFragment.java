@@ -2,17 +2,17 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,8 +33,6 @@ import com.parse.SaveCallback;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class VideosFragment extends Fragment {
@@ -298,7 +296,7 @@ public class VideosFragment extends Fragment {
         Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton2);
 
         final Dialog alert = new Dialog(getActivity());
-        alert.setTitle("New Suggestion");
+        alert.requestWindowFeature(Window.FEATURE_NO_TITLE);
         alert.setContentView(mTextEntryView);
 
         pbutton.setOnClickListener(new View.OnClickListener() {

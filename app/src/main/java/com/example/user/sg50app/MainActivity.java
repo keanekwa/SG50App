@@ -130,11 +130,6 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            /* todo add settings activity Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-            MainActivity.this.startActivity(intent);*/
-        }
-
         if (id == R.id.action_logout) {
             final ProgressDialog mLogoutLoader = new ProgressDialog(MainActivity.this);
             mLogoutLoader.setMessage(getString(R.string.logout_dialog_message));
