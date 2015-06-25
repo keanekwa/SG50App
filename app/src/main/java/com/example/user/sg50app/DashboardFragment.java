@@ -64,6 +64,9 @@ public class DashboardFragment extends Fragment {
     Button postWish;
     View mTextEntryView;
 
+    TextView noOfUserPhotos;
+    TextView noOfUserPosts;
+
     ProgressBar loading;
 
     @Override
@@ -95,8 +98,8 @@ public class DashboardFragment extends Fragment {
             countdownTitle.setTypeface(custom_font);
             noOfPhotos.setTypeface(custom_font);
             noOfPosts.setTypeface(custom_font);
-            final TextView noOfUserPhotos = (TextView) view.findViewById(R.id.userPhotoNo);
-            final TextView noOfUserPosts = (TextView) view.findViewById(R.id.userPostNo);
+            noOfUserPhotos = (TextView) view.findViewById(R.id.userPhotoNo);
+            noOfUserPosts = (TextView) view.findViewById(R.id.userPostNo);
             final LinearLayout countdownLinearLayout = (LinearLayout) view.findViewById(R.id.countdownLinearLayout);
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Singapore"));
@@ -129,92 +132,45 @@ public class DashboardFragment extends Fragment {
             slidingimage = (ParseImageView) view.findViewById(R.id.imageOfTheDay);
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
             query.addDescendingOrder("likeNumber");
-            query.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> parseObjects, ParseException e) {
                     if (e == null) {
-                        // The count request succeeded. Log the count
-                        totalPostings = count;
-                        photoNo = totalPostings.toString();
-                        noOfPhotos.setText(photoNo);
-                        query.cancel();
-                        query.setLimit(5);
-                        query.findInBackground(new FindCallback<ParseObject>() {
-                            @Override
-                            public void done(List<ParseObject> parseObjects, ParseException e) {
-                                if (e == null) {
-                                    for (int j = 0; j < parseObjects.size(); j++) {
-                                        placeholder.add(parseObjects.get(j));
-                                    }
-                                    final Handler mHandler = new Handler();
-                                    loading.setVisibility(View.GONE);
+                        for (int j = 0; j < parseObjects.size(); j++) {
+                            placeholder.add(parseObjects.get(j));
+                        }
+                        final Handler mHandler = new Handler();
+                        loading.setVisibility(View.GONE);
 
-                                    // Create runnable for posting
-                                    final Runnable mUpdateResults = new Runnable() {
-                                        public void run() {
+                        // Create runnable for posting
+                        final Runnable mUpdateResults = new Runnable() {
+                            public void run() {
 
-                                            AnimateandSlideShow();
+                                AnimateandSlideShow();
 
-                                        }
-                                    };
-
-                                    int delay = 1000; // delay for 1 sec.
-
-                                    int period = 8000; // repeat every 4 sec.
-
-                                    Timer timer = new Timer();
-
-                                    timer.scheduleAtFixedRate(new TimerTask() {
-
-                                        public void run() {
-
-                                            mHandler.post(mUpdateResults);
-
-                                        }
-
-                                    }, delay, period);
-                                }
                             }
-                        });
+                        };
 
+                        int delay = 1000; // delay for 1 sec.
+
+                        int period = 8000; // repeat every 4 sec.
+
+                        Timer timer = new Timer();
+
+                        timer.scheduleAtFixedRate(new TimerTask() {
+
+                            public void run() {
+
+                                mHandler.post(mUpdateResults);
+
+                            }
+
+                        }, delay, period);
                     }
                 }
             });
 
-            final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("onNationalDay");
-            query2.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
-                    if (e == null) {
-                        // The count request succeeded. Log the count
-                        totalPosts = count;
-                        postNo = totalPosts.toString();
-                        noOfPosts.setText(postNo);
-                        query2.cancel();
-                    }
-                }
-            });
-
-            final ParseQuery<ParseObject> query3 = ParseQuery.getQuery("allPostings");
-            query3.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
-            query3.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
-                    if (e == null) {
-                        noOfUserPhotos.setText(Integer.toString(count));
-                        query3.cancel();
-                    }
-                }
-            });
-
-            final ParseQuery<ParseObject> query4 = ParseQuery.getQuery("onNationalDay");
-            query4.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
-            query4.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
-                    if (e == null) {
-                        noOfUserPosts.setText(Integer.toString(count));
-                        query4.cancel();
-                    }
-                }
-            });
-
+        }
             TextView profileTitle = (TextView) view.findViewById(R.id.profileTitle);
             profileTitle.setText(ParseUser.getCurrentUser().getUsername() + "\'s Profile");
 
@@ -233,9 +189,63 @@ public class DashboardFragment extends Fragment {
                     Dialog();
                 }
             });*/
-        }
-            return view;
+        recount();
 
+        return view;
+
+    }
+
+    public void recount(){
+        if(loading!=null) loading.setVisibility(View.VISIBLE);
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
+        query.addDescendingOrder("likeNumber");
+        query.countInBackground(new CountCallback() {
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    // The count request succeeded. Log the count
+                    totalPostings = count;
+                    photoNo = totalPostings.toString();
+                    if(noOfPhotos!=null) noOfPhotos.setText(photoNo);
+                    query.cancel();
+                }
+            }
+        });
+
+        final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("onNationalDay");
+        query2.countInBackground(new CountCallback() {
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    // The count request succeeded. Log the count
+                    totalPosts = count;
+                    postNo = totalPosts.toString();
+                    if(noOfPosts!=null) noOfPosts.setText(postNo);
+                    query2.cancel();
+                }
+            }
+        });
+
+        final ParseQuery<ParseObject> query3 = ParseQuery.getQuery("allPostings");
+        query3.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+        query3.countInBackground(new CountCallback() {
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    if(noOfUserPhotos!=null) noOfUserPhotos.setText(Integer.toString(count));
+                    query3.cancel();
+                }
+            }
+        });
+
+        final ParseQuery<ParseObject> query4 = ParseQuery.getQuery("onNationalDay");
+        query4.whereEqualTo("createdBy", ParseUser.getCurrentUser().getUsername());
+        query4.countInBackground(new CountCallback() {
+            public void done(int count, ParseException e) {
+                if (e == null) {
+                    if(noOfUserPosts!=null) noOfUserPosts.setText(Integer.toString(count));
+                    query4.cancel();
+                    if(loading!=null) loading.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override

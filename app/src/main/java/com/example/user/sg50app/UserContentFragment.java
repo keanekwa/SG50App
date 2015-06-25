@@ -110,13 +110,13 @@ public class UserContentFragment extends Fragment {
         }
 
         if(hasLoaded) setContentList();
-        else refresh();
+        else refresh(true);
         loading.setVisibility(View.GONE);
 
         return view;
     }
 
-    public void refresh(){
+    public void refresh(final Boolean toSetList){
         loading.setVisibility(View.VISIBLE);
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
         query.addDescendingOrder("createdAt");
@@ -125,6 +125,7 @@ public class UserContentFragment extends Fragment {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
+                    mPHOTOS.clear();
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPHOTOS.add(parseObjects.get(j));
                     }
@@ -135,10 +136,11 @@ public class UserContentFragment extends Fragment {
                         @Override
                         public void done(List<ParseObject> parseObjects, ParseException e) {
                             if (e == null) {
+                                mWISHES.clear();
                                 for (int j = 0; j < parseObjects.size(); j++) {
                                     mWISHES.add(parseObjects.get(j));
                                 }
-                                setContentList();
+                                if(toSetList) setContentList();
                             }
                         }
                     });
@@ -182,6 +184,7 @@ public class UserContentFragment extends Fragment {
 
     public void setContentList() {
         loading.setVisibility(View.VISIBLE);
+        if(getActivity()==null) return;
         switch (currentPage) {
             case "Your Photos":
                 PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.user_photos_list, mPHOTOS);

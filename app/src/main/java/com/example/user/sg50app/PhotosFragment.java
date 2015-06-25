@@ -141,7 +141,7 @@ public class PhotosFragment extends Fragment {
         if (fromSplashScreen){
             setPhotosList();
         }
-        else loadPhotos();
+        else loadPhotos(true);
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -204,7 +204,7 @@ public class PhotosFragment extends Fragment {
                         topButton.setText("Top Photos");
                         break;
                 }
-                loadPhotos();
+                loadPhotos(true);
                 break;
             case "Best Of The Past":
                 switch (key){
@@ -303,6 +303,7 @@ public class PhotosFragment extends Fragment {
     }
 
     public void setPhotosList() {
+        if(getActivity()==null) return;
         loading.setVisibility(View.VISIBLE);
         PhotosAdapter adapter;
         switch(currentPage) {
@@ -327,7 +328,7 @@ public class PhotosFragment extends Fragment {
         //lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     }
 
-    public void loadPhotos() {
+    public void loadPhotos(final Boolean toSetList) {
         if(toSortTopBy==null) toSortTopBy = "likeNumber";
         loading.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
@@ -341,7 +342,7 @@ public class PhotosFragment extends Fragment {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mTOP.add(parseObjects.get(j));
                         if (mTOP.size() == 15) {
-                            if (currentPage.equals(TOP_PHOTOS_STRING)) setPhotosList();
+                            if (currentPage.equals(TOP_PHOTOS_STRING) && toSetList) setPhotosList();
                             ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
                             query2.addDescendingOrder("createdAt");
                             query2.findInBackground(new FindCallback<ParseObject>() {
@@ -364,7 +365,7 @@ public class PhotosFragment extends Fragment {
                                                 break;
                                         }
                                     }
-                                    setPhotosList();
+                                    if (toSetList) setPhotosList();
                                 }
                             });
                             break;

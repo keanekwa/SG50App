@@ -55,9 +55,6 @@ public class VideosFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mVideos == null){
-            mVideos = new ArrayList<>();
-        }
     }
 
     @Override
@@ -70,7 +67,11 @@ public class VideosFragment extends Fragment {
         ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton3);
         ImageButton sortButton = (ImageButton) view.findViewById(R.id.sortVideosImageButton);
 
-        refreshVideos();
+        if(mVideos==null) {
+            mVideos = new ArrayList<>();
+            refreshVideos(true);
+        }
+        else setVideosList();
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +102,7 @@ public class VideosFragment extends Fragment {
                                 toSortBy = "likeNumber";
                                 break;
                         }
-                        refreshVideos();
+                        refreshVideos(true);
                     }
                 });
             }
@@ -120,7 +121,7 @@ public class VideosFragment extends Fragment {
         super.onDetach();
     }
 
-    public void refreshVideos(){
+    public void refreshVideos(final Boolean toSetList){
         loading.setVisibility(View.VISIBLE);
         if(toSortBy==null) toSortBy="createdAt";
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
@@ -134,13 +135,14 @@ public class VideosFragment extends Fragment {
                     for (int j = 0; j < videosList.size(); j++) {
                         mVideos.add(videosList.get(j));
                     }
-                    setVideosList();
+                    if(toSetList) setVideosList();
                 }
             }
         });
     }
 
     public void setVideosList(){
+        if(getActivity()==null) return;
         ArrayAdapter<ParseObject> adapter;
         adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
         mListView.setAdapter(adapter);
