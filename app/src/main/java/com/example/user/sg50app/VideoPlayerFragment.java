@@ -13,7 +13,7 @@ public class VideoPlayerFragment extends YouTubePlayerSupportFragment {
     private YouTubePlayer activePlayer;
 
     public static VideoPlayerFragment newInstance(String url) {
-
+        MainActivity.YOrN = true;
         VideoPlayerFragment videoPlayerFragment = new VideoPlayerFragment();
 
         Bundle bundle = new Bundle();
@@ -47,10 +47,16 @@ public class VideoPlayerFragment extends YouTubePlayerSupportFragment {
     }
 
     @Override
+    public void onPause(){
+        activePlayer.pause();
+    }
+
+    @Override
     public void onDestroy() {
         if (activePlayer != null) {
             activePlayer.release();
         }
+        MainActivity.YOrN = false;
         super.onDestroy();
     }
 }

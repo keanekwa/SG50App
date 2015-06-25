@@ -1,52 +1,50 @@
 package com.example.user.sg50app;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Point;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseImageView;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SearchFragment extends Fragment {
     public static ArrayList<ParseObject> mRESULTS;
-    View mTextEntryView;
-    GridView mPhotoGridView;
+    ListView mListView;
     EditText searchText;
     private ProgressBar loading;
     ImageButton confirmButton;
     ImageButton backButton;
     String searchQuery;
     static String originator;
-
-
+    RelativeLayout noResults;
 
     public static SearchFragment newInstance(String origin) {
         originator = origin;
@@ -72,25 +70,35 @@ public class SearchFragment extends Fragment {
         if(mRESULTS ==null) {
             mRESULTS = new ArrayList<>();
         }
-        mPhotoGridView = (GridView) view.findViewById(R.id.searchGridView);
+        mListView = (ListView) view.findViewById(R.id.searchListView);
         loading = (ProgressBar) view.findViewById(R.id.progressBar3);
         loading.setVisibility(View.INVISIBLE);
         searchText = (EditText)view.findViewById(R.id.searchText);
         confirmButton = (ImageButton)view.findViewById(R.id.confirm_search);
         backButton = (ImageButton)view.findViewById(R.id.backArrow);
+        noResults = (RelativeLayout)view.findViewById(R.id.noResults);
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mRESULTS.clear();
                 searchQuery = searchText.getText().toString().toLowerCase();
+                if(searchQuery.equals("")){
+                    Toast.makeText(getActivity(),"Please enter text.",Toast.LENGTH_LONG).show();
+                }
+                else{
                 searchText.setText("");
-                switch (originator){
+                switch (originator) {
                     case "PF":
-                    searchPhotos();
+                        searchPhotos();
                         break;
-
-
+                    case "VF":
+                        searchVideos();
+                        break;
+                    case "WF":
+                        searchWants();
+                        break;
+                }
                 }
             }
         });
@@ -111,6 +119,7 @@ public class SearchFragment extends Fragment {
 
     public void searchPhotos(){
         loading.setVisibility(View.VISIBLE);
+        noResults.setVisibility(View.INVISIBLE);
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
         query.addDescendingOrder("createdAt");
         query.whereContains("imgTitle", searchQuery);
@@ -123,15 +132,79 @@ public class SearchFragment extends Fragment {
                     }
                     setContentList();
                 }
+                else{
+                    noResults.setVisibility(View.VISIBLE);
+                    query.cancel();
+                }
 
             }
         });
     }
+
+    public void searchVideos(){
+        loading.setVisibility(View.VISIBLE);
+        noResults.setVisibility(View.INVISIBLE);
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
+        query.addDescendingOrder("createdAt");
+        query.whereContains("vidTitle", searchQuery);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> videosList, ParseException e) {
+                if (e == null) {
+                    for (int j = 0; j < videosList.size(); j++) {
+                        mRESULTS.add(videosList.get(j));
+                    }
+                    setContentList();
+                }
+
+                else{
+                    noResults.setVisibility(View.VISIBLE);
+                    query.cancel();
+                }
+            }
+        });
+    }
+
+    public void searchWants(){
+        loading.setVisibility(View.VISIBLE);
+        noResults.setVisibility(View.INVISIBLE);
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("onNationalDay");
+        query.addDescendingOrder("createdAt");
+        query.whereContains("postTitle",searchQuery);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> parseObjects, ParseException e) {
+                if (e == null) {
+                    for (int j = 0; j < parseObjects.size(); j++) {
+                        mRESULTS.add(parseObjects.get(j));
+                    }
+                    setContentList();
+                }
+                else{
+                    noResults.setVisibility(View.VISIBLE);
+                    query.cancel();
+                }
+            }
+        });
+    }
+
     public void setContentList() {
         loading.setVisibility(View.VISIBLE);
+        switch (originator){
+            case "PF":
                 PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.photos_list, mRESULTS);
-                mPhotoGridView.setVisibility(View.VISIBLE);
-                mPhotoGridView.setAdapter(adapter);
+                mListView.setVisibility(View.VISIBLE);
+                mListView.setAdapter(adapter);
+            case "VF":
+                VideoListAdapter adapter2 = new VideoListAdapter(getActivity(),R.layout.videos_list, mRESULTS);
+                mListView.setVisibility(View.VISIBLE);
+                mListView.setAdapter(adapter2);
+            case "WF":
+                wantAdapter adapter3 = new wantAdapter(getActivity(),R.layout.want_list, mRESULTS);
+                mListView.setVisibility(View.VISIBLE);
+                mListView.setAdapter(adapter3);
+        }
         loading.setVisibility(View.GONE);
     }
     @Override
@@ -163,117 +236,287 @@ public class SearchFragment extends Fragment {
                 row = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
             }
 
-            final ParseObject currentItem = mTopPics.get(position);
-            ParseFile fileObject = currentItem.getParseFile("actualImage");
-            ParseImageView currentImage = (ParseImageView) row.findViewById(R.id.gridImg);
-            currentImage.setPlaceholder(getResources().getDrawable(R.drawable.image_placeholder));
-            currentImage.setParseFile(fileObject);
-            currentImage.loadInBackground(new GetDataCallback() {
-                @Override
-                public void done(byte[] data, ParseException e) {
+            final ParseObject currentTopImage = mTopPics.get(position);
+            TextView titleTextView = (TextView) row.findViewById(R.id.imgTitle);
+            titleTextView.setText(currentTopImage.getString("imgTitle"));
+            TextView subtitleTextView = (TextView) row.findViewById(R.id.photoBy);
+            subtitleTextView.setText(getString(R.string.photo_by) + getString(R.string.space) + currentTopImage.getString("createdBy"));
+            TextView categoryTextView = (TextView) row.findViewById(R.id.imageCategory);
+            String categoryString = getString(R.string.nothing);
+            if (currentTopImage.getString("category").matches(getString(R.string.best_of_past_category))) {
+                categoryString = getString(R.string.photo_title_section2);
+            }
+            else if (currentTopImage.getString("category").matches(getString(R.string.day_as_sgean_category))) {
+                categoryString = getString(R.string.photo_title_section3);
+            }
+            else if (currentTopImage.getString("category").matches(getString(R.string.future_hopes_category))) {
+                categoryString = getString(R.string.photo_title_section4);
+            }
+            categoryTextView.setText("Category:" + getString(R.string.space) + categoryString);
+
+            //set like button status on create
+            final ImageView likeImageView = (ImageView) row.findViewById(R.id.likeImageView);
+            final TextView likeNumberTextView = (TextView) row.findViewById(R.id.likeNumber);
+            likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+            final ParseUser mCurrentUser = ParseUser.getCurrentUser();
+            ArrayList<ParseUser> mFirstWhoLikedList = (ArrayList) currentTopImage.get("likeImgPeople");
+            if (mFirstWhoLikedList == null) {
+                mFirstWhoLikedList = new ArrayList<>();
+            }
+            boolean hasLiked = false;
+            for (int i = 0; i < mFirstWhoLikedList.size(); i++) {
+                if (mFirstWhoLikedList.get(i) == mCurrentUser) {
+                    hasLiked = true;
+                    break;
                 }
-            });
-            currentImage.setOnClickListener(new View.OnClickListener() {
+            }
+            if (hasLiked) {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+            }
+            else {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+            }
+
+            //when like button is clicked
+            likeImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    photoDialog(currentItem);
+                    ArrayList<ParseUser> mWhoLikedList = (ArrayList) currentTopImage.get("likeImgPeople");
+                    if (mWhoLikedList == null) {
+                        mWhoLikedList = new ArrayList<>();
+                    }
+                    boolean hasLiked = false;
+                    for (int i = 0; i < mWhoLikedList.size(); i++) {
+                        if (mWhoLikedList.get(i) == mCurrentUser) {
+                            hasLiked = true;
+                            break;
+                        }
+                    }
+                    if (hasLiked) {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
+                        mWhoLikedList.remove(ParseUser.getCurrentUser());
+                        currentTopImage.put("likeImgPeople", mWhoLikedList);
+                    } else {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
+                        mWhoLikedList.add(ParseUser.getCurrentUser());
+                        currentTopImage.put("likeImgPeople", mWhoLikedList);
+                    }
+                    currentTopImage.saveInBackground();
+                    likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+                }
+            });
+
+            ParseFile fileObject = currentTopImage.getParseFile("actualImage");
+            final ImageView actualImage = (ImageView) row.findViewById(R.id.topImgView);
+            fileObject.getDataInBackground(new GetDataCallback() {
+                @Override
+                public void done(byte[] data, ParseException e) {
+                    if (e == null) {
+                        Bitmap bmp = BitmapFactory
+                                .decodeByteArray(
+                                        data, 0,
+                                        data.length);
+                        actualImage.setImageBitmap(bmp);
+                    }
                 }
             });
             return row;
         }
     }
 
-    public void photoDialog(final ParseObject currentItem) {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        mTextEntryView = factory.inflate(R.layout.individual_photo, null);
-        ParseImageView imageView = (ParseImageView)mTextEntryView.findViewById(R.id.indImgView);
-        imageView.setPlaceholder(getResources().getDrawable(R.drawable.image_placeholder));
-        imageView.setParseFile(currentItem.getParseFile("actualImage"));
-        imageView.loadInBackground(new GetDataCallback() {
-            @Override
-            public void done(byte[] data, ParseException e) {
+    private class VideoListAdapter extends ArrayAdapter<ParseObject> {
+        private int mResource;
+        private ArrayList<ParseObject> mTopPics;
+
+        public VideoListAdapter(Context context, int resource, ArrayList<ParseObject> topPics) {
+            super(context, resource, topPics);
+            mResource = resource;
+            mTopPics = topPics;
+        }
+
+        //display subject data in every row of listView
+        @Override
+        public View getView(final int position, View row, ViewGroup parent) {
+            if (row == null) {
+                row = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
             }
-        });
 
-        TextView titleText = (TextView)mTextEntryView.findViewById(R.id.imgTitleI);
-        titleText.setText(currentItem.getString("imgTitle"));
-        TextView subtitleText = (TextView)mTextEntryView.findViewById(R.id.photoByI);
-        subtitleText.setText(currentItem.getString("createdBy"));
-        TextView categoryText = (TextView)mTextEntryView.findViewById(R.id.imageCategoryI);
-        categoryText.setText(currentItem.getString("category"));
-
-        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton2);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        final Dialog alert = new Dialog(getActivity());
-        WindowManager.LayoutParams layoutParams = alert.getWindow().getAttributes();
-        layoutParams.height=size.y;
-        layoutParams.width=size.x;
-        layoutParams.gravity= Gravity.TOP;
-        alert.getWindow().setAttributes(layoutParams);
-        alert.setContentView(mTextEntryView);
-
-        final ImageView likeImageView = (ImageView) mTextEntryView.findViewById(R.id.likeImageViewI);
-        final TextView likeNumberTextView = (TextView) mTextEntryView.findViewById(R.id.likeNumberI);
-        likeNumberTextView.setText(String.valueOf(currentItem.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
-        final ParseUser mCurrentUser = ParseUser.getCurrentUser();
-        ArrayList<ParseUser> mFirstWhoLikedList = (ArrayList) currentItem.get("likeImgPeople");
-        if (mFirstWhoLikedList == null) {
-            mFirstWhoLikedList = new ArrayList<>();
-        }
-        boolean hasLiked = false;
-        for (int i = 0; i < mFirstWhoLikedList.size(); i++) {
-            if (mFirstWhoLikedList.get(i) == mCurrentUser) {
-                hasLiked = true;
-                break;
+            final ParseObject currentTopImage = mTopPics.get(position);
+            TextView titleTextView = (TextView) row.findViewById(R.id.vidTitle);
+            titleTextView.setText(currentTopImage.getString("vidTitle"));
+            TextView categoryTextView = (TextView) row.findViewById(R.id.vidCategory);
+            categoryTextView.setText(currentTopImage.getString("vidCategory"));
+            //set like button status on create
+            final ImageView likeImageView = (ImageView) row.findViewById(R.id.vidLikeImageView);
+            final TextView likeNumberTextView = (TextView) row.findViewById(R.id.vidLikeNumber);
+            likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+            final ParseUser mCurrentUser = ParseUser.getCurrentUser();
+            ArrayList<ParseUser> mFirstWhoLikedList = (ArrayList) currentTopImage.get("likeVidPeople");
+            if (mFirstWhoLikedList == null) {
+                mFirstWhoLikedList = new ArrayList<>();
             }
-        }
-        if (hasLiked) {
-            likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
-        }
-        else {
-            likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
-        }
-
-        //when like button is clicked
-        likeImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ArrayList<ParseUser> mWhoLikedList = (ArrayList) currentItem.get("likeImgPeople");
-                if (mWhoLikedList == null) {
-                    mWhoLikedList = new ArrayList<>();
+            boolean hasLiked = false;
+            for (int i = 0; i < mFirstWhoLikedList.size(); i++) {
+                if (mFirstWhoLikedList.get(i) == mCurrentUser) {
+                    hasLiked = true;
+                    break;
                 }
-                boolean hasLiked = false;
-                for (int i = 0; i < mWhoLikedList.size(); i++) {
-                    if (mWhoLikedList.get(i) == mCurrentUser) {
-                        hasLiked = true;
-                        break;
+            }
+            if (hasLiked) {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+            }
+            else {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+            }
+
+            //when like button is clicked
+            likeImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<ParseUser> mWhoLikedList = (ArrayList) currentTopImage.get("likeVidPeople");
+                    if (mWhoLikedList == null) {
+                        mWhoLikedList = new ArrayList<>();
                     }
+                    boolean hasLiked = false;
+                    for (int i = 0; i < mWhoLikedList.size(); i++) {
+                        if (mWhoLikedList.get(i) == mCurrentUser) {
+                            hasLiked = true;
+                            break;
+                        }
+                    }
+                    if (hasLiked) {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
+                        mWhoLikedList.remove(ParseUser.getCurrentUser());
+                        currentTopImage.put("likeVidPeople", mWhoLikedList);
+                    } else {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
+                        mWhoLikedList.add(ParseUser.getCurrentUser());
+                        currentTopImage.put("likeVidPeople", mWhoLikedList);
+                    }
+                    currentTopImage.saveInBackground();
+                    likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
                 }
-                if (hasLiked) {
-                    likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
-                    currentItem.put("likeNumber", (currentItem.getInt("likeNumber") - 1));
-                    mWhoLikedList.remove(ParseUser.getCurrentUser());
-                    currentItem.put("likeImgPeople", mWhoLikedList);
-                } else {
-                    likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
-                    currentItem.put("likeNumber", (currentItem.getInt("likeNumber") + 1));
-                    mWhoLikedList.add(ParseUser.getCurrentUser());
-                    currentItem.put("likeImgPeople", mWhoLikedList);
-                }
-                currentItem.saveInBackground();
-                likeNumberTextView.setText(String.valueOf(currentItem.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
-            }
-        });
+            });
 
-        nbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alert.dismiss();
+            final String vidURL = "http://img.youtube.com/vi/"+currentTopImage.getString("videoURL")+"/sddefault.jpg";
+            final ImageView thumbnail = (ImageView)row.findViewById(R.id.videoThumbnail);
+            final Bitmap[] bmp = new Bitmap[1];
+
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        InputStream in = new URL(vidURL).openStream();
+                        bmp[0] = BitmapFactory.decodeStream(in);
+                    } catch (Exception e) {
+                        // log error
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    if (bmp[0] != null)
+                        thumbnail.setImageBitmap(bmp[0]);
+                }
+
+            }.execute();
+
+            thumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, VideoPlayerFragment.newInstance(currentTopImage.getString("videoURL"))).commit();
+                }
+            });
+            return row;
+        }
+    }
+
+    private class wantAdapter extends ArrayAdapter<ParseObject> {
+        //creating variables
+        private int mResource;
+        private ArrayList<ParseObject> mPosts;
+
+        public wantAdapter(Context context, int resource, ArrayList<ParseObject> posts) {
+            super(context, resource, posts);
+            mResource = resource;
+            mPosts = posts;
+        }
+
+        //display subject data in every row of listView
+        @Override
+        public View getView(final int position, View row, ViewGroup parent) {
+            if (row == null) {
+                row = LayoutInflater.from(getContext()).inflate(mResource, parent, false);
             }
-        });
-        alert.show();
+
+            final ParseObject currentTopImage = mPosts.get(position);
+            TextView titleTextView = (TextView) row.findViewById(R.id.userWant);
+            titleTextView.setText(currentTopImage.getString("postTitle"));
+            TextView subtitleTextView = (TextView) row.findViewById(R.id.postedBy2);
+            subtitleTextView.setText(currentTopImage.getString("createdBy"));
+
+            //set like button status on create
+            final ImageView likeImageView = (ImageView) row.findViewById(R.id.likeImageView2);
+            final TextView likeNumberTextView = (TextView) row.findViewById(R.id.likeNumber2);
+            likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+            final ParseUser mCurrentUser = ParseUser.getCurrentUser();
+            ArrayList<ParseUser> mFirstWhoLikedList = (ArrayList) currentTopImage.get("likePeopleArray");
+            if (mFirstWhoLikedList == null) {
+                mFirstWhoLikedList = new ArrayList<>();
+            }
+            boolean hasLiked = false;
+            for (int i = 0; i < mFirstWhoLikedList.size(); i++) {
+                if (mFirstWhoLikedList.get(i) == mCurrentUser) {
+                    hasLiked = true;
+                    break;
+                }
+            }
+            if (hasLiked) {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+            }
+            else {
+                likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+            }
+
+            //when like button is clicked
+            likeImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ArrayList<ParseUser> mWhoLikedList = (ArrayList) currentTopImage.get("likePeopleArray");
+                    if (mWhoLikedList == null) {
+                        mWhoLikedList = new ArrayList<>();
+                    }
+                    boolean hasLiked = false;
+                    for (int i = 0; i < mWhoLikedList.size(); i++) {
+                        if (mWhoLikedList.get(i) == mCurrentUser) {
+                            hasLiked = true;
+                            break;
+                        }
+                    }
+                    if (hasLiked) {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
+                        mWhoLikedList.remove(ParseUser.getCurrentUser());
+                        currentTopImage.put("likePeopleArray", mWhoLikedList);
+                    } else {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
+                        mWhoLikedList.add(ParseUser.getCurrentUser());
+                        currentTopImage.put("likePeopleArray", mWhoLikedList);
+                    }
+                    currentTopImage.saveInBackground();
+                    likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+                }
+            });
+
+            return row;
+        }
     }
 
 }

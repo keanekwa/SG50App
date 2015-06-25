@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -50,7 +52,8 @@ public class OnNatDayFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_on_nat_day, container, false);
-        ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton);
+        FloatingActionButton fabImageButton = (FloatingActionButton) view.findViewById(R.id.action_a3);
+        FloatingActionButton searchButton = (FloatingActionButton) view.findViewById(R.id.action_b3);
         lvToShow = (ListView) view.findViewById(R.id.postListView);
         loading = (ProgressBar) view.findViewById(R.id.natDayLoading);
 
@@ -64,6 +67,14 @@ public class OnNatDayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Dialog();
+            }
+        });
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.container, SearchFragment.newInstance("WF")).commit();
             }
         });
 
@@ -216,6 +227,11 @@ public class OnNatDayFragment extends Fragment {
         public void positiveButton() {
             EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
             String post = mPostField.getText().toString();
+            if (post.equals("")){
+                Toast.makeText(getActivity(),"Please enter text.", Toast.LENGTH_LONG).show();
+            }
+
+            else{
             ParseObject postObject = new ParseObject("onNationalDay");
             postObject.put("postTitle",post);
             postObject.put("likeNumber",0);
@@ -227,6 +243,7 @@ public class OnNatDayFragment extends Fragment {
 
                 }
             });
+            }
         }
 
 }

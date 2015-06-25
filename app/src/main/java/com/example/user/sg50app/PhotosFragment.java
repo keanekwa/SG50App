@@ -88,7 +88,6 @@ public class PhotosFragment extends Fragment {
         FloatingActionButton fabImageButton = (FloatingActionButton) view.findViewById(R.id.action_a);
         FloatingActionButton searchButton = (FloatingActionButton)view.findViewById(R.id.action_b);
         FloatingActionButton sortImageButton = (FloatingActionButton)view.findViewById(R.id.action_c);
-        MainActivity.YOrN = true;
         MainActivity.origin = "PF";
         toSortTopBy = "likeNumber";
 

@@ -115,10 +115,18 @@ public class MainActivity extends ActionBarActivity
         actionBar.setTitle(mTitle);
         actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
+            MenuItem backIcon = menu.findItem(R.id.action_back);
+            if (YOrN){
+                backIcon.setVisible(true);
+            }
+            else{
+                backIcon.setVisible(false);
+            }
             restoreActionBar();
             return true;
         }

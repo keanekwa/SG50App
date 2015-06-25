@@ -58,10 +58,10 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/searchText">
 
-        <GridView
+        <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchGridView"
+            android:id="@+id/searchListView"
             android:layout_gravity="center"
             android:visibility="visible"
             android:clickable="false"
@@ -79,6 +79,25 @@
             android:id="@+id/progressBar3"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:id="@+id/noResults"
+            android:visibility="invisible">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="There are no results."
+                android:id="@+id/textView4"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
 </LinearLayout>

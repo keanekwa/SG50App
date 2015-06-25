@@ -115,30 +115,31 @@
                 android:id="@+id/action_a"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/light_red"
-                fab:fab_title="Post New"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_title="Search"
                 android:src="@drawable/cameraoutline"
-                fab:fab_colorPressed="@color/red"/>
+                fab:fab_colorPressed="@color/translucent_white"
+                android:tint="@color/red"/>
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_b"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/light_red"
+                fab:fab_colorNormal="@color/white"
                 fab:fab_title="Search"
                 android:src="@drawable/search"
-                fab:fab_colorPressed="@color/red"
-                android:tint="@android:color/white"/>
+                fab:fab_colorPressed="@color/translucent_white"
+                android:tint="@color/red"/>
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/action_c"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/light_red"
-                fab:fab_title="Post New"
-                fab:fab_colorPressed="@color/red"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_title="Search"
                 android:src="@drawable/sort"
-                android:tint="@android:color/white"/>
+                fab:fab_colorPressed="@color/translucent_white"
+                android:tint="@color/red"/>
 
         </com.getbase.floatingactionbutton.FloatingActionsMenu>
     </RelativeLayout>

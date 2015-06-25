@@ -42,6 +42,7 @@ public class VideosFragment extends Fragment {
     private ProgressBar loading;
     private ListView mListView;
     private String toSortBy;
+    public static Boolean YOrN = false;
 
     public static VideosFragment newInstance() {
         return new VideosFragment();
@@ -298,6 +299,10 @@ public class VideosFragment extends Fragment {
     public void positiveButton() {
         EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.suggestEditText);
         String post = mPostField.getText().toString();
+        if (post.equals("")){
+            Toast.makeText(getActivity(),"Please enter text.", Toast.LENGTH_LONG).show();
+        }
+        else {
         ParseObject postObject = new ParseObject("suggestionsFromUsers");
         postObject.put("suggestion", post);
         postObject.put("submittedBy", ParseUser.getCurrentUser().getUsername());
@@ -307,6 +312,6 @@ public class VideosFragment extends Fragment {
                 Toast.makeText(getActivity(), "Suggested!", Toast.LENGTH_LONG).show();
 
             }
-        });
+        });}
     }
 }
