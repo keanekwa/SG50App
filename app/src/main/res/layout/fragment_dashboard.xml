@@ -408,12 +408,6 @@
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="#666">
-            </RelativeLayout>
-
         </LinearLayout>
     </ScrollView>
 

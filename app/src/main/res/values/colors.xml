@@ -6,6 +6,7 @@
     <item name="white" type="color">#ffffffff</item>
     <item name="translucent_white" type="color">#ccffffff</item>
     <item name="grey" type="color">#cccc</item>
+    <item name="medium_grey" type="color">#2B2B2B</item>
     <item name="translucent_black" type="color">#33000000</item>
 
 </resources>
