@@ -101,7 +101,7 @@ public class DashboardFragment extends Fragment {
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Singapore"));
             final long nowTime = calendar.getTimeInMillis();
-            final long ndpTime = 0; //1439049600000L
+            final long ndpTime = 1439049600000L;
             long countdownTime = ndpTime-nowTime;
             new CountDownTimer(countdownTime, 1000) {
                  public void onTick(long millisUntilFinished) {
