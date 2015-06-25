@@ -30,6 +30,10 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private static PhotosFragment mPhotosFragment;
+    private static DashboardFragment mDashboardFragment;
+    private static UserContentFragment mUserContentFragment;
+    private static OnNatDayFragment mOnNatDayFragment;
+    private static VideosFragment mVideosFragment;
 
 
     @Override
@@ -63,11 +67,13 @@ public class MainActivity extends ActionBarActivity
 
         switch (position) {
             case 0:
-                newFragment = new DashboardFragment();
+                mDashboardFragment = new DashboardFragment();
+                newFragment = mDashboardFragment;
                 mTitle = getString(R.string.title_section1);
                 break;
             case 1:
-                newFragment = new UserContentFragment();
+                mUserContentFragment = new UserContentFragment();
+                newFragment = mUserContentFragment;
                 mTitle = getString(R.string.title_section2);
                 break;
 
@@ -77,11 +83,13 @@ public class MainActivity extends ActionBarActivity
                 mTitle = getString(R.string.title_section3);
                 break;
             case 3:
-                newFragment = new OnNatDayFragment();
+                mOnNatDayFragment = new OnNatDayFragment();
+                newFragment = mOnNatDayFragment;
                 mTitle = getString(R.string.title_section4);
                 break;
             case 4:
-                newFragment = new VideosFragment();
+                mVideosFragment = new VideosFragment();
+                newFragment = mVideosFragment;
                 mTitle = getString(R.string.title_section5);
                 break;
         }
@@ -139,6 +147,14 @@ public class MainActivity extends ActionBarActivity
                     MainActivity.this.startActivity(intent);
                 }
             });
+        }
+
+        if (id == R.id.action_refresh){
+            //if(mDashboardFragment!=null) mDashboardFragment.refresh();
+            if(mUserContentFragment!=null) mUserContentFragment.refresh();
+            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos();
+            if(mOnNatDayFragment!=null) mOnNatDayFragment.refreshOnNatDay();
+            if(mVideosFragment!=null) mVideosFragment.refreshVideos();
         }
 
         return super.onOptionsItemSelected(item);

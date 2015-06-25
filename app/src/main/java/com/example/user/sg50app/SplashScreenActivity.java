@@ -16,11 +16,6 @@ import java.util.List;
 
 public class SplashScreenActivity extends Activity {
 
-    private Boolean hasTopLoaded = false;
-    private Boolean hasPastLoaded = false;
-    private Boolean hasPresentLoaded = false;
-    private Boolean hasFutureLoaded = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +45,7 @@ public class SplashScreenActivity extends Activity {
                     if (e == null) {
                         for (int j = 0; j < parseObjects.size(); j++) {
                             PhotosFragment.mTOP.add(parseObjects.get(j));
-                            if (PhotosFragment.mTOP.size() == 6) {
-                                hasTopLoaded = true;
+                            if (PhotosFragment.mTOP.size() == 15) {
                                 ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
                                 query2.addDescendingOrder("createdAt");
                                 query2.findInBackground(new FindCallback<ParseObject>() {
@@ -61,13 +55,13 @@ public class SplashScreenActivity extends Activity {
                                             String category = list.get(j).getString("category");
                                             switch (category) {
                                                 case "BestOfPast":
-                                                    if (PhotosFragment.mPAST.size() < 6) PhotosFragment.mPAST.add(list.get(j));
+                                                    PhotosFragment.mPAST.add(list.get(j));
                                                     break;
                                                 case "DayAsSGean":
-                                                    if (PhotosFragment.mPRESENT.size() < 6) PhotosFragment.mPRESENT.add(list.get(j));
+                                                    PhotosFragment.mPRESENT.add(list.get(j));
                                                     break;
                                                 case "FutureHopes":
-                                                    if (PhotosFragment.mFUTURE.size() < 6) PhotosFragment.mFUTURE.add(list.get(j));
+                                                    PhotosFragment.mFUTURE.add(list.get(j));
                                                     break;
                                             }
 

@@ -27,6 +27,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class PhotosFragment extends Fragment {
@@ -50,6 +52,8 @@ public class PhotosFragment extends Fragment {
     private Button pastButton;
     private Button presentButton;
     private Button futureButton;
+
+    private String toSortTopBy;
 
     public static PhotosFragment newInstance() {
         return new PhotosFragment();
@@ -76,6 +80,9 @@ public class PhotosFragment extends Fragment {
         futureButton = (Button)view.findViewById(R.id.futureButton);
         loading = (ProgressBar)view.findViewById(R.id.photosLoadingPb);
         ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton2);
+        ImageButton sortImageButton = (ImageButton)view.findViewById(R.id.sortPhotosImageButton);
+
+        toSortTopBy = "likeNumber";
 
         topButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +152,31 @@ public class PhotosFragment extends Fragment {
             }
         });
 
+        sortImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListSelectorDialog dlg = new ListSelectorDialog(getActivity(), "Sort By");
+                String[] list;
+                String[] list2;
+                if(currentPage.equals(TOP_PHOTOS_STRING)) {
+                    list = new String[]{"Recent", "Popularity"};
+                    list2 = new String[]{"recent", "likes"};
+                }
+                else{
+                    list = new String[]{"Alphabetical", "Recent", "Popularity"};
+                    list2 = new String[]{"title", "recent", "likes"};
+                }
+                dlg.show(list, list2, new ListSelectorDialog.listSelectorInterface() {
+                    public void selectorCanceled() {
+                        //Bloop
+                    }
+                    public void selectedItem(String key, String item) {
+                        sortList(key);
+                    }
+                });
+            }
+        });
+
         return view;
     }
 
@@ -156,6 +188,68 @@ public class PhotosFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    public void sortList(String key){
+        loading.setVisibility(View.VISIBLE);
+        switch (currentPage){
+            case "Top Photos":
+                switch (key){
+                    case "recent":
+                        toSortTopBy = "createdAt";
+                        topButton.setText("Recent Photos");
+                        break;
+                    case "likes":
+                        toSortTopBy = "likeNumber";
+                        topButton.setText("Top Photos");
+                        break;
+                }
+                loadPhotos();
+                break;
+            case "Best Of The Past":
+                switch (key){
+                    case "title":
+                        Collections.sort(mPAST, new TitleComparator());
+                        break;
+                    case "recent":
+                        Collections.sort(mPAST, new RecentComparator());
+                        break;
+                    case "likes":
+                        Collections.sort(mPAST, new LikesComparator());
+                        break;
+                }
+                setPhotosList();
+                break;
+            case "A Day As A Singaporean":
+                switch (key){
+                    case "title":
+                        Collections.sort(mPRESENT, new TitleComparator());
+                        break;
+                    case "recent":
+                        Collections.sort(mPRESENT, new RecentComparator());
+                        break;
+                    case "likes":
+                        Collections.sort(mPRESENT, new LikesComparator());
+                        break;
+                }
+                setPhotosList();
+                break;
+            case "Future Hopes For Singapore":
+                switch (key){
+                    case "title":
+                        Collections.sort(mFUTURE, new TitleComparator());
+                        break;
+                    case "recent":
+                        Collections.sort(mFUTURE, new RecentComparator());
+                        break;
+                    case "likes":
+                        Collections.sort(mFUTURE, new LikesComparator());
+                        break;
+                }
+                setPhotosList();
+                break;
+        }
+        loading.setVisibility(View.GONE);
     }
 
     public void setCurrentPage(String pageToSet){
@@ -234,9 +328,10 @@ public class PhotosFragment extends Fragment {
     }
 
     public void loadPhotos() {
+        if(toSortTopBy==null) toSortTopBy = "likeNumber";
         loading.setVisibility(View.VISIBLE);
         ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
-        query.addDescendingOrder("likeNumber");
+        query.addDescendingOrder(toSortTopBy);
         query.setLimit(15);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -245,7 +340,7 @@ public class PhotosFragment extends Fragment {
                     mTOP.clear();
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mTOP.add(parseObjects.get(j));
-                        if (mTOP.size() == 6) {
+                        if (mTOP.size() == 15) {
                             if (currentPage.equals(TOP_PHOTOS_STRING)) setPhotosList();
                             ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
                             query2.addDescendingOrder("createdAt");
@@ -259,13 +354,13 @@ public class PhotosFragment extends Fragment {
                                         String category = list.get(j).getString("category");
                                         switch (category) {
                                             case "BestOfPast":
-                                                if (mPAST.size() < 6) mPAST.add(list.get(j));
+                                                mPAST.add(list.get(j));
                                                 break;
                                             case "DayAsSGean":
-                                                if (mPRESENT.size() < 6) mPRESENT.add(list.get(j));
+                                                mPRESENT.add(list.get(j));
                                                 break;
                                             case "FutureHopes":
-                                                if (mFUTURE.size() < 6) mFUTURE.add(list.get(j));
+                                                mFUTURE.add(list.get(j));
                                                 break;
                                         }
                                     }
@@ -400,6 +495,27 @@ public class PhotosFragment extends Fragment {
                 }
             });
             return row;
+        }
+    }
+
+    public class RecentComparator implements Comparator<ParseObject> {
+        @Override
+        public int compare(ParseObject o1, ParseObject o2) {
+            return o2.getCreatedAt().compareTo(o1.getCreatedAt());
+        }
+    }
+
+    public class LikesComparator implements Comparator<ParseObject> {
+        @Override
+        public int compare(ParseObject o1, ParseObject o2) {
+            return o2.getInt("likeNumber") - o1.getInt("likeNumber");
+        }
+    }
+
+    public class TitleComparator implements Comparator<ParseObject> {
+        @Override
+        public int compare(ParseObject o1, ParseObject o2) {
+            return o1.getString("imgTitle").compareTo(o2.getString("imgTitle"));
         }
     }
 }

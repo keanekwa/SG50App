@@ -33,13 +33,16 @@ import com.parse.SaveCallback;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class VideosFragment extends Fragment {
 
-    private static ArrayList<ParseObject> mVideos;
-
+    public static ArrayList<ParseObject> mVideos;
     private ProgressBar loading;
+    private ListView mListView;
+    private String toSortBy;
 
     public static VideosFragment newInstance() {
         return new VideosFragment();
@@ -56,46 +59,53 @@ public class VideosFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (mVideos == null){
             mVideos = new ArrayList<>();
-
         }
-
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_videos, container, false);
-        final ListView mListView = (ListView) view.findViewById(R.id.vidListView);
+        mListView = (ListView) view.findViewById(R.id.vidListView);
+        loading = (ProgressBar)view.findViewById(R.id.vidsLoadingPb);
         ImageButton fabImageButton = (ImageButton) view.findViewById(R.id.imageButton3);
+        ImageButton sortButton = (ImageButton) view.findViewById(R.id.sortVideosImageButton);
 
-
-
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
-        query.addDescendingOrder("createdAt");
-        query.setLimit(10);
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> videosList, ParseException e) {
-                if (e == null) {
-                    mVideos.clear();
-                    for (int j = 0; j < videosList.size(); j++) {
-                        mVideos.add(videosList.get(j));
-                    }
-                    ArrayAdapter<ParseObject> adapter;
-                    adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
-                    mListView.setAdapter(adapter);
-                }
-            }
-        });
-
+        refreshVideos();
 
         fabImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Dialog();
+            }
+        });
+
+        sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ListSelectorDialog dlg = new ListSelectorDialog(getActivity(), "Sort By");
+                String[] list = new String[]{"Alphabetical", "Recent", "Popularity"};
+                String[] list2 = new String[]{"title", "recent", "likes"};
+                dlg.show(list, list2, new ListSelectorDialog.listSelectorInterface() {
+                    public void selectorCanceled() {
+                        //Bloop
+                    }
+                    public void selectedItem(String key, String item) {
+                        switch (key){
+                            case "title":
+                                toSortBy = "vidTitle";
+                                break;
+                            case "recent":
+                                toSortBy = "createdAt";
+                                break;
+                            case "likes":
+                                toSortBy = "likeNumber";
+                                break;
+                        }
+                        refreshVideos();
+                    }
+                });
             }
         });
 
@@ -112,10 +122,34 @@ public class VideosFragment extends Fragment {
         super.onDetach();
     }
 
+    public void refreshVideos(){
+        loading.setVisibility(View.VISIBLE);
+        if(toSortBy==null) toSortBy="createdAt";
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("videoList");
+        query.addDescendingOrder(toSortBy);
+        query.setLimit(10);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> videosList, ParseException e) {
+                if (e == null) {
+                    mVideos.clear();
+                    for (int j = 0; j < videosList.size(); j++) {
+                        mVideos.add(videosList.get(j));
+                    }
+                    setVideosList();
+                }
+            }
+        });
+    }
 
+    public void setVideosList(){
+        ArrayAdapter<ParseObject> adapter;
+        adapter = new VideosAdapter(getActivity(), R.layout.videos_list, mVideos);
+        mListView.setAdapter(adapter);
+        loading.setVisibility(View.GONE);
+    }
 
-
-        private class VideosAdapter extends ArrayAdapter<ParseObject> {
+    private class VideosAdapter extends ArrayAdapter<ParseObject> {
         //creating variables
         private int mResource;
         private ArrayList<ParseObject> mTopPics;
