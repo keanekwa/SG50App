@@ -2,11 +2,14 @@ package com.example.user.sg50app;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.graphics.Point;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -33,7 +36,9 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -74,10 +79,10 @@ public class DashboardFragment extends Fragment {
         Activity activity = getActivity();
         if(activity != null) {
             TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
-            TextView dayNo = (TextView) view.findViewById(R.id.dayNo);
-            TextView hourNo = (TextView) view.findViewById(R.id.hourNo);
-            TextView minuteNo = (TextView) view.findViewById(R.id.minuteNo);
-            TextView secondNo = (TextView) view.findViewById(R.id.secondNo);
+            final TextView dayNo = (TextView) view.findViewById(R.id.dayNo);
+            final TextView hourNo = (TextView) view.findViewById(R.id.hourNo);
+            final TextView minuteNo = (TextView) view.findViewById(R.id.minuteNo);
+            final TextView secondNo = (TextView) view.findViewById(R.id.secondNo);
             noOfPhotos = (TextView) view.findViewById(R.id.photoNo);
             noOfPosts = (TextView) view.findViewById(R.id.postNo);
             Typeface custom_font = Typeface.createFromAsset(activity.getAssets(), "fonts/Din.ttf");
@@ -90,6 +95,27 @@ public class DashboardFragment extends Fragment {
             noOfPosts.setTypeface(custom_font);
             final TextView noOfUserPhotos = (TextView) view.findViewById(R.id.userPhotoNo);
             final TextView noOfUserPosts = (TextView) view.findViewById(R.id.userPostNo);
+
+            Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Singapore"));
+            final long nowTime = calendar.getTimeInMillis();
+            final long ndpTime = 1439049600000L;
+            long countdownTime = ndpTime-nowTime;
+            new CountDownTimer(countdownTime, 1000) {
+                 public void onTick(long millisUntilFinished) {
+                    Calendar countdownCalendar = Calendar.getInstance();
+                    countdownCalendar.setTimeInMillis(millisUntilFinished);
+                    Log.d("ndpTime", Long.toString(ndpTime));
+                    Log.d("nowTime", Long.toString(nowTime));
+                    Log.d("millisUntilFinished", Long.toString(millisUntilFinished));
+                    dayNo.setText(Integer.toString(countdownCalendar.get(Calendar.DAY_OF_YEAR)));
+                    hourNo.setText(DateFormat.format("HH", millisUntilFinished));
+                    minuteNo.setText(DateFormat.format("mm", millisUntilFinished));
+                    secondNo.setText(DateFormat.format("ss", millisUntilFinished));
+                }
+                public void onFinish() {
+
+                }
+            }.start();
 
             slidingimage = (ParseImageView) view.findViewById(R.id.imageOfTheDay);
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
