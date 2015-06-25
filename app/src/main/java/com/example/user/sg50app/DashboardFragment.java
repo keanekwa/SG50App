@@ -163,7 +163,7 @@ public class DashboardFragment extends Fragment {
             query3.countInBackground(new CountCallback() {
                 public void done(int count, ParseException e) {
                     if (e == null) {
-                        noOfUserPosts.setText(Integer.toString(count));
+                        noOfUserPhotos.setText(Integer.toString(count));
                         query3.cancel();
                     }
                 }
