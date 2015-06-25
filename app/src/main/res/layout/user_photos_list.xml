@@ -2,10 +2,11 @@
 <com.parse.ParseImageView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="160dp"
     android:id="@+id/gridImg"
-    android:scaleType="fitCenter"
+    android:scaleType="centerCrop"
     android:adjustViewBounds="true"
     android:contentDescription="@string/stuff"
-    android:layout_gravity="center"/>
+    android:layout_gravity="center"
+    />
     <!--android:background="#f5f5f5"-->
