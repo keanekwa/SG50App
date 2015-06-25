@@ -9,7 +9,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,11 +58,7 @@ public class DashboardFragment extends Fragment {
     String photoNo;
     TextView noOfPosts;
     String postNo;
-    Button postPhoto;
-    Button postWish;
     View mTextEntryView;
-
-    ProgressBar loading;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,8 +70,6 @@ public class DashboardFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        loading = (ProgressBar)view.findViewById(R.id.dashboardLoading);
-        loading.setVisibility(View.VISIBLE);
         Activity activity = getActivity();
         if(activity != null) {
             final TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
@@ -107,9 +99,6 @@ public class DashboardFragment extends Fragment {
                  public void onTick(long millisUntilFinished) {
                     Calendar countdownCalendar = Calendar.getInstance();
                     countdownCalendar.setTimeInMillis(millisUntilFinished);
-                    Log.d("ndpTime", Long.toString(ndpTime));
-                    Log.d("nowTime", Long.toString(nowTime));
-                    Log.d("millisUntilFinished", Long.toString(millisUntilFinished));
                     dayNo.setText(Integer.toString(countdownCalendar.get(Calendar.DAY_OF_YEAR)));
                     hourNo.setText(DateFormat.format("HH", millisUntilFinished));
                     minuteNo.setText(DateFormat.format("mm", millisUntilFinished));
@@ -146,7 +135,6 @@ public class DashboardFragment extends Fragment {
                                         placeholder.add(parseObjects.get(j));
                                     }
                                     final Handler mHandler = new Handler();
-                                    loading.setVisibility(View.GONE);
 
                                     // Create runnable for posting
                                     final Runnable mUpdateResults = new Runnable() {
@@ -217,22 +205,6 @@ public class DashboardFragment extends Fragment {
 
             TextView profileTitle = (TextView) view.findViewById(R.id.profileTitle);
             profileTitle.setText(ParseUser.getCurrentUser().getUsername() + "\'s Profile");
-
-            /*postPhoto = (Button) view.findViewById(R.id.photoButton);
-            postPhoto.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), PostNewActivity.class);
-                    startActivity(intent);
-                }
-            });
-            postWish = (Button) view.findViewById(R.id.wishButton);
-            postWish.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Dialog();
-                }
-            });*/
         }
             return view;
 

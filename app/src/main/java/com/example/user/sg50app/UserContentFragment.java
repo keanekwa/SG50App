@@ -83,19 +83,24 @@ public class UserContentFragment extends Fragment {
         }
         if (currentPage == null) {
             currentPage = YOUR_PHOTOS_STRING;
-            mPhotoButton.setEnabled(false);
+            setTabAsSelected(mPhotoButton, true);
+            setTabAsSelected(mWishButton, false);
         }
 
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setCurrentPage(YOUR_PHOTOS_STRING);
+                setTabAsSelected(mPhotoButton, true);
+                setTabAsSelected(mWishButton, false);
             }
         });
         mWishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setCurrentPage(YOUR_WISHES_STRING);
+                setTabAsSelected(mPhotoButton, false);
+                setTabAsSelected(mWishButton, true);
             }
         });
 
@@ -114,6 +119,17 @@ public class UserContentFragment extends Fragment {
         loading.setVisibility(View.GONE);
 
         return view;
+    }
+
+    public void setTabAsSelected (Button button, boolean isSelected) {
+        if (isSelected) {
+            button.setBackgroundDrawable(getResources().getDrawable(R.drawable.tab_bottom_border));
+            button.setTextColor(getResources().getColor(R.color.white));
+        }
+        else {
+            button.setBackgroundDrawable(getResources().getDrawable(android.R.color.transparent));
+            button.setTextColor(getResources().getColor(R.color.translucent_white));
+        }
     }
 
     public void refresh(){
@@ -166,17 +182,6 @@ public class UserContentFragment extends Fragment {
         if (!pageToSet.equals(currentPage)) {
             currentPage = pageToSet;
             setContentList();
-        }
-
-        switch (pageToSet) {
-            case "Your Photos":
-                mPhotoButton.setEnabled(false);
-                mWishButton.setEnabled(true);
-                break;
-            case "Your Wishes":
-                mPhotoButton.setEnabled(true);
-                mWishButton.setEnabled(false);
-                break;
         }
     }
 
