@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_title="Post New"
-            android:src="@drawable/penciloutline"
+            android:src="@drawable/ic_edit_white_36dp"
             android:tint="@color/red"
             fab:fab_colorPressed="@color/translucent_white"/>
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/white"
             fab:fab_title="Search"
-            android:src="@drawable/search"
+            android:src="@drawable/ic_search_white_36dp"
             fab:fab_colorPressed="@color/translucent_white"
             android:tint="@color/red"/>
 

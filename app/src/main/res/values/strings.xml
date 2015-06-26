@@ -23,11 +23,11 @@
 
     <string name="hello_world">Hello world!</string>
 
-    <string name="signup">New to Singapics? Sign up here.</string>
+    <string name="signup">New to Encapsulate? Sign up here.</string>
     <string name="login">Login</string>
-    <string name="login_dialog_message">Please wait while we log you into Singapics…</string>
-    <string name="join">Join Singapics</string>
-    <string name="subtitle">Celebrate SG50 with a crowd-sourced photobook of our little red dot!</string>
+    <string name="login_dialog_message">Please wait while we log you into Encapsulate…</string>
+    <string name="join">Join Encapsulate</string>
+    <string name="subtitle">Celebrate SG50 with a crowd-sourced time capsule of what we cherish of the past, everyday Singaporean things, and our hopes for the future!</string>
     <string name="create">Create Account</string>
     <string name="email">Email</string>
     <string name="passwords_dont_match_error">Your passwords do not match. Please re-enter.</string>
@@ -36,7 +36,7 @@
     <string name="nothing"/>
     <string name="action_logout">Logout</string>
     <string name="post_new_photo">Post New Photo</string>
-    <string name="logout_dialog_message">Please wait while we log you out of Singapics…</string>
+    <string name="logout_dialog_message">Please wait while we log you out of Encapsulate…</string>
     <string name="title_activity_post_new">Post a New Photo</string>
     <string name="picdisc">Picture the User has chosen</string>
     <string name="remove">Remove</string>
@@ -46,7 +46,7 @@
     <string name="caption">Caption</string>
     <string name="category">Category</string>
     <string name="postPhoto">Post Photo</string>
-    <string name="appName">Singapics</string>
+    <string name="appName">Encapsulate</string>
     <string name="menu">menu</string>
     <string name="stuff">Pic User Has Chosen</string>
     <string name="likes">likes</string>

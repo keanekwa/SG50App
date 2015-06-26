@@ -10,7 +10,11 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="41dp">
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <EditText
             android:layout_width="fill_parent"
@@ -28,12 +32,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/confirm_search"
-            android:background="@drawable/search"
+            android:background="@drawable/ic_search_white_36dp"
             android:layout_gravity="right"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="5dp"
+            />
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -45,7 +51,9 @@
             android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="7dp" />
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="5dp"
+            android:tint="#333"/>
 
     </RelativeLayout>
 

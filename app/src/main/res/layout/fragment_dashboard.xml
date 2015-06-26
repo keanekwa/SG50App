@@ -238,10 +238,10 @@
                                 android:paddingLeft="5dp"/>
 
                             <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
                                 android:id="@+id/imageView5"
-                                android:src="@drawable/cameraoutline"
+                                android:src="@drawable/ic_photo_camera_white_36dp"
                                 android:layout_toStartOf="@+id/textView13"
                                 android:layout_centerInParent="true"
                                 android:adjustViewBounds="true"
