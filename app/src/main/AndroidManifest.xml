@@ -18,6 +18,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:configChanges="orientation|screenSize">
+        <receiver android:name="WidgetClass" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                android:resource="@xml/widget_provider" />
+        </receiver>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
