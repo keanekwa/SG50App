@@ -287,52 +287,5 @@ public class DashboardFragment extends Fragment {
         });
     }
 
-    public void photoDialog() {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        mTextEntryView = factory.inflate(R.layout.individual_photo, null);
-        Button pbutton = (Button)mTextEntryView.findViewById(R.id.finalizeButton);
-        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton);
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-
-        final Dialog alert = new Dialog(getActivity());
-        WindowManager.LayoutParams layoutParams = alert.getWindow().getAttributes();
-        layoutParams.height=size.y;
-        layoutParams.width=size.x;
-        layoutParams.gravity= Gravity.TOP | Gravity.LEFT;
-        alert.getWindow().setAttributes(layoutParams);
-        alert.setTitle("New Post");
-        alert.setContentView(mTextEntryView);
-
-        pbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                positiveButton();
-                alert.dismiss();
-            }
-        });
-        nbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alert.dismiss();
-            }
-        });
-        alert.show();
-    }
-
-    public void positiveButton2() {
-        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
-        String post = mPostField.getText().toString();
-        ParseObject postObject = new ParseObject("onNationalDay");
-        postObject.put("postTitle",post);
-        postObject.put("likeNumber",0);
-        postObject.put("createdBy", ParseUser.getCurrentUser().getUsername());
-        postObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
-
-            }
-        });
-    }
 
 }

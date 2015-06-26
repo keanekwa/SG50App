@@ -500,6 +500,15 @@ public class PhotosFragment extends Fragment {
                     }
                 }
             });
+
+            actualImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction().replace(R.id.container, IndividualPhotoFragment.newInstance(currentTopImage,"PF")).commit();
+                }
+            });
+
             return row;
         }
     }
