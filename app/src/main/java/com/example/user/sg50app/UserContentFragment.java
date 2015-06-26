@@ -38,6 +38,7 @@ public class UserContentFragment extends Fragment {
     public static ArrayList<ParseObject> mPHOTOS;
     public static ArrayList<ParseObject> mWISHES;
     View mTextEntryView;
+    public static Integer currentItem;
 
     private ListView mWishListView;
     private GridView mPhotoGridView;
@@ -87,6 +88,8 @@ public class UserContentFragment extends Fragment {
             setTabAsSelected(mPhotoButton, true);
             setTabAsSelected(mWishButton, false);
         }
+
+
 
         mPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,6 +205,10 @@ public class UserContentFragment extends Fragment {
                 mWishListView.setAdapter(adapter2);
                 break;
         }
+        if (currentItem != null){
+            mPhotoGridView.setSelection(currentItem);
+            currentItem = null;
+        }
         loading.setVisibility(View.GONE);
     }
 
@@ -238,7 +245,7 @@ public class UserContentFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, IndividualPhotoFragment.newInstance(currentTopImage,"UF")).commit();
+                    fragmentManager.beginTransaction().replace(R.id.container, IndividualPhotoFragment.newInstance(null, position, currentTopImage,"UF")).commit();
                 }
             });
             return row;

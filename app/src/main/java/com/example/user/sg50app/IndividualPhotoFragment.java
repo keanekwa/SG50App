@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -38,13 +39,17 @@ public class IndividualPhotoFragment extends Fragment {
 
     public static String originator;
     public static ParseObject currentItem;
-
+    public static Integer currentPos;
+    public static String currentPage2;
     private ParseImageView mImageView;
     private ProgressBar loading;
 
     private ImageButton backButton;
 
-    public static IndividualPhotoFragment newInstance(ParseObject currentItems, String origin) {
+    public static IndividualPhotoFragment newInstance(@Nullable String currentPage,Integer position, ParseObject currentItems, String origin) {
+        if (currentPage != null){
+        currentPage2 = currentPage;}
+        currentPos = position;
         originator = origin;
         currentItem = currentItems;
         return new IndividualPhotoFragment();
@@ -69,19 +74,26 @@ public class IndividualPhotoFragment extends Fragment {
         backButton = (ImageButton)view.findViewById(R.id.imageButton);
         loading.setVisibility(View.VISIBLE);
         mImageView.setParseFile(currentItem.getParseFile("actualImage"));
+        mImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         mImageView.setPlaceholder(getResources().getDrawable(R.drawable.image_placeholder));
         mImageView.loadInBackground();
         loading.setVisibility(View.INVISIBLE);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 switch (originator) {
+                    default:
                     case "PF":
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                        fragmentManager.beginTransaction().replace(R.id.container, PhotosFragment.newInstance()).commit();
+                        Fragment fragment1 = new PhotosFragment();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment1).commit();
+                        PhotosFragment.currentItem = currentPos;
+                        PhotosFragment.fromIndiv = currentPage2;
+                        break;
                     case "UF":
-                        FragmentManager fragmentManager2 = getActivity().getSupportFragmentManager();
-                        fragmentManager2.beginTransaction().replace(R.id.container, UserContentFragment.newInstance()).commit();
+                        Fragment fragment2 = new UserContentFragment();
+                        fragmentManager.beginTransaction().replace(R.id.container, fragment2).commit();
+                        break;
                 }
             }
         });

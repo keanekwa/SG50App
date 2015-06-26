@@ -52,7 +52,9 @@ public class PhotosFragment extends Fragment {
 
     private ListView mListView;
     private String currentPage;
+    public static String fromIndiv;
     private ProgressBar loading;
+    public static Integer currentItem;
 
     private Button topButton;
     private Button pastButton;
@@ -91,6 +93,7 @@ public class PhotosFragment extends Fragment {
         MainActivity.origin = "PF";
         toSortTopBy = "likeNumber";
 
+
         topButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +126,14 @@ public class PhotosFragment extends Fragment {
             LIST_OF_PAGES.add(DAY_AS_A_SINGAPOREAN_STRING);
             LIST_OF_PAGES.add(FUTURE_HOPES_STRING);
         }
+
+
+
         if (currentPage == null) {
+            if (fromIndiv != null){
+                currentPage = fromIndiv;
+                setCurrentPage(currentPage);
+            }
             currentPage = TOP_PHOTOS_STRING;
             setTabAsSelected(topButton, true);
         }
@@ -308,6 +318,7 @@ public class PhotosFragment extends Fragment {
                 setTabAsSelected(futureButton, true);
                 break;
         }
+
     }
 
     public void setTabAsSelected (Button button, boolean isSelected) {
@@ -342,6 +353,10 @@ public class PhotosFragment extends Fragment {
                 adapter = new PhotosAdapter(getActivity(), R.layout.photos_list, mFUTURE);
                 mListView.setAdapter(adapter);
                 break;
+        }
+        if (currentItem != null){
+            mListView.setSelection(currentItem);
+            currentItem = null;
         }
         loading.setVisibility(View.GONE);
         //lvToShow.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
@@ -505,7 +520,7 @@ public class PhotosFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    fragmentManager.beginTransaction().replace(R.id.container, IndividualPhotoFragment.newInstance(currentTopImage,"PF")).commit();
+                    fragmentManager.beginTransaction().replace(R.id.container, IndividualPhotoFragment.newInstance(currentPage, position, currentTopImage,"PF")).commit();
                 }
             });
 
