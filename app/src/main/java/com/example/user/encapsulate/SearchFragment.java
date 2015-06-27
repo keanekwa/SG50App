@@ -135,7 +135,7 @@ public class SearchFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
+                if (e == null && parseObjects.size()>0) {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mRESULTS.add(parseObjects.get(j));
                     }
@@ -143,6 +143,7 @@ public class SearchFragment extends Fragment {
                 }
                 else{
                     noResults.setVisibility(View.VISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
                     query.cancel();
                 }
 
@@ -160,15 +161,15 @@ public class SearchFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> videosList, ParseException e) {
-                if (e == null) {
+                if (e == null && videosList.size()>0) {
                     for (int j = 0; j < videosList.size(); j++) {
                         mRESULTS.add(videosList.get(j));
                     }
                     setContentList();
                 }
-
                 else{
                     noResults.setVisibility(View.VISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
                     query.cancel();
                 }
             }
@@ -184,7 +185,7 @@ public class SearchFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
+                if (e == null && parseObjects.size()>0) {
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mRESULTS.add(parseObjects.get(j));
                     }
@@ -192,6 +193,7 @@ public class SearchFragment extends Fragment {
                 }
                 else{
                     noResults.setVisibility(View.VISIBLE);
+                    loading.setVisibility(View.INVISIBLE);
                     query.cancel();
                 }
             }
@@ -205,14 +207,17 @@ public class SearchFragment extends Fragment {
                 PhotoListAdapter adapter = new PhotoListAdapter(getActivity(), R.layout.photos_list, mRESULTS);
                 mListView.setVisibility(View.VISIBLE);
                 mListView.setAdapter(adapter);
+                break;
             case "VF":
                 VideoListAdapter adapter2 = new VideoListAdapter(getActivity(),R.layout.videos_list, mRESULTS);
                 mListView.setVisibility(View.VISIBLE);
                 mListView.setAdapter(adapter2);
+                break;
             case "WF":
                 wantAdapter adapter3 = new wantAdapter(getActivity(),R.layout.want_list, mRESULTS);
                 mListView.setVisibility(View.VISIBLE);
                 mListView.setAdapter(adapter3);
+                break;
         }
         loading.setVisibility(View.GONE);
     }
