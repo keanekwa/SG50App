@@ -90,6 +90,7 @@ public class SearchFragment extends Fragment {
                 }
                 else{
                 searchText.setText("");
+                    mRESULTS.clear();
                 switch (originator) {
                     case "PF":
                         searchPhotos();
@@ -108,7 +109,6 @@ public class SearchFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 switch (originator) {
                     case "PF":
                         mListener.backTo(2);
