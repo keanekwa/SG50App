@@ -36,9 +36,11 @@ public class SignUpActivity extends Activity {
         mSignUpLoader.setMessage(getString(R.string.signup_dialog_message));
         mSignUpLoader.setIndeterminate(true);
         mSignUpLoader.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
+
         mAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSignUpLoader.show();
                 usernameInput = mUsernameBlank.getText().toString();
                 passwordInput = mPasswordBlank.getText().toString();
                 cPasswordInput = mCPasswordBlank.getText().toString();
@@ -65,6 +67,7 @@ public class SignUpActivity extends Activity {
                                 ParseUser.logInInBackground(usernameInput, passwordInput, new LogInCallback() {
                                     public void done(ParseUser user, ParseException e) {
                                         if (user != null && e == null) {
+                                            mSignUpLoader.dismiss();
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             SignUpActivity.this.startActivity(intent);
                                         } else {
