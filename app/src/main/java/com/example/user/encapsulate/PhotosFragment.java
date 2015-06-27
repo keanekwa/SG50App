@@ -368,42 +368,38 @@ public class PhotosFragment extends Fragment {
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
-                if (e == null) {
-                    mTOP.clear();
-                    for (int j = 0; j < parseObjects.size(); j++) {
-                        mTOP.add(parseObjects.get(j));
-                        if (mTOP.size() == 15) {
-                            if (currentPage.equals(TOP_PHOTOS_STRING) && toSetList) setPhotosList();
-                            ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
-                            query2.addDescendingOrder("createdAt");
-                            query2.findInBackground(new FindCallback<ParseObject>() {
-                                @Override
-                                public void done(List<ParseObject> list, ParseException e) {
-                                    mPAST.clear();
-                                    mPRESENT.clear();
-                                    mFUTURE.clear();
-                                    for (int j = 0; j < list.size(); j++) {
-                                        String category = list.get(j).getString("category");
-                                        switch (category) {
-                                            case "BestOfPast":
-                                                mPAST.add(list.get(j));
-                                                break;
-                                            case "DayAsSGean":
-                                                mPRESENT.add(list.get(j));
-                                                break;
-                                            case "FutureHopes":
-                                                mFUTURE.add(list.get(j));
-                                                break;
-                                        }
-                                    }
-                                    if (toSetList) setPhotosList();
-                                }
-                            });
-                            break;
+            if (e == null) {
+                mTOP.clear();
+                for (int j = 0; j < parseObjects.size(); j++) {
+                    mTOP.add(parseObjects.get(j));
+                }
+                if (currentPage.equals(TOP_PHOTOS_STRING) && toSetList) setPhotosList();
+                ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
+                query2.addDescendingOrder("createdAt");
+                query2.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> list, ParseException e) {
+                    mPAST.clear();
+                    mPRESENT.clear();
+                    mFUTURE.clear();
+                    for (int j = 0; j < list.size(); j++) {
+                        String category = list.get(j).getString("category");
+                        switch (category) {
+                            case "BestOfPast":
+                                mPAST.add(list.get(j));
+                                break;
+                            case "DayAsSGean":
+                                mPRESENT.add(list.get(j));
+                                break;
+                            case "FutureHopes":
+                                mFUTURE.add(list.get(j));
+                                break;
                         }
                     }
-
-                }
+                    if (toSetList) setPhotosList();
+                    }
+                });
+            }
             }
         });
     }
