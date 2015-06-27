@@ -141,7 +141,8 @@
             android:id="@+id/finalizeButton"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/white"
-            android:background="@color/red"/>
+            android:background="@color/red"
+            />
 
         <ProgressBar
             android:layout_width="wrap_content"

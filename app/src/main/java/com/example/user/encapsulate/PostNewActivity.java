@@ -123,6 +123,9 @@ public class PostNewActivity extends ActionBarActivity {
                 if(String.valueOf(mCategorySpinner.getSelectedItem()).equals("Category")){
                     Toast.makeText(PostNewActivity.this, "Choose a category", Toast.LENGTH_LONG).show();
                 }
+                else if (mTitleEditText.getText().toString().equals(getString(R.string.nothing))) {
+                    Toast.makeText(PostNewActivity.this, "Please enter a caption", Toast.LENGTH_LONG).show();
+                }
                 else if (!isPicChosen){
                     Toast.makeText(PostNewActivity.this, "Choose or take a picture", Toast.LENGTH_LONG).show();
                 }
