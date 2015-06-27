@@ -2,7 +2,9 @@ package com.example.user.encapsulate;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,6 +39,7 @@ public class MainActivity extends ActionBarActivity
     public static Boolean YOrN = false;
     public static String origin;
     private int mCurrentFrag;
+    private static Menu mMenu;
 
 
     @Override
@@ -50,12 +53,6 @@ public class MainActivity extends ActionBarActivity
             startActivity(intent);
         }
 
-        Intent infoIntent = getIntent();
-        if(infoIntent.getBooleanExtra("toRefreshPhotos", false)){
-            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos(false);
-            if(mUserContentFragment!=null) mUserContentFragment.refresh(false);
-        }
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -64,6 +61,16 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        Intent infoIntent = getIntent();
+        if(infoIntent.getBooleanExtra("toRefreshPhotos", false)){
+            if(mPhotosFragment!=null) mPhotosFragment.loadPhotos(false);
+            if(mUserContentFragment!=null) mUserContentFragment.refresh(false);
+        }
+        if(infoIntent.getIntExtra("goto", 0)!=0){
+            int position = infoIntent.getIntExtra("goto", 0) - 1;
+            onNavigationDrawerItemSelected(position);
+        }
     }
 
     @Override
@@ -104,9 +111,6 @@ public class MainActivity extends ActionBarActivity
             fragmentManager.beginTransaction().replace(R.id.container, newFragment).commit();
         }
     }
-    @Override
-    public void onBackPressed() {
-    }
 
     public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
@@ -120,6 +124,7 @@ public class MainActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
+            mMenu = menu;
             MenuItem backIcon = menu.findItem(R.id.action_back);
             if (YOrN){
                 backIcon.setVisible(true);

@@ -129,8 +129,10 @@ public class PhotosFragment extends Fragment {
                 currentPage = fromIndiv;
                 setCurrentPage(currentPage);
             }
-            currentPage = TOP_PHOTOS_STRING;
-            setTabAsSelected(topButton, true);
+            else {
+                currentPage = TOP_PHOTOS_STRING;
+                setTabAsSelected(topButton, true);
+            }
         }
 
         Boolean fromSplashScreen = true;

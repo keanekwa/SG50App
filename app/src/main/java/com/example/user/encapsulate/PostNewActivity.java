@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,9 +61,8 @@ public class PostNewActivity extends ActionBarActivity {
         setContentView(R.layout.activity_post_new);
         final android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         assert actionBar != null;
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
         actionBar.setDisplayHomeAsUpEnabled(true);
-
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.red)));
         mTitleEditText = (EditText)findViewById(R.id.captionEditText);
         mCategorySpinner = (Spinner)findViewById(R.id.categorySpinner);
         mPostButton = (Button)findViewById(R.id.finalizeButton);
@@ -182,6 +182,7 @@ public class PostNewActivity extends ActionBarActivity {
                                         Toast.makeText(PostNewActivity.this, "Picture Uploaded!", Toast.LENGTH_LONG).show();
                                         Intent mainActIntent = new Intent(PostNewActivity.this, MainActivity.class);
                                         mainActIntent.putExtra("toRefreshPhotos", true);
+                                        mainActIntent.putExtra("goto", 3);
                                         startActivity(mainActIntent);
                                     }
                                 });
@@ -191,6 +192,24 @@ public class PostNewActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed (){
+        super.onBackPressed();
+        Intent mainActIntent = new Intent(PostNewActivity.this, MainActivity.class);
+        mainActIntent.putExtra("goto", 3);
+        startActivity(mainActIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == android.R.id.home){
+            onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

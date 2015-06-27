@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,25 +62,27 @@ public class IndividualPhotoFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                switch (originator) {
-                    default:
-                    case "PF":
-                        Fragment fragment1 = new PhotosFragment();
-                        fragmentManager.beginTransaction().replace(R.id.container, fragment1).commit();
-                        PhotosFragment.currentItem = currentPos;
-                        PhotosFragment.fromIndiv = currentPage2;
-                        break;
-                    case "UF":
-                        Fragment fragment2 = new UserContentFragment();
-                        fragmentManager.beginTransaction().replace(R.id.container, fragment2).commit();
-                        break;
-                }
+                backButtonHocusPocus();
             }
         });
-
-
         return view;
+    }
+
+    public void backButtonHocusPocus(){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        switch (originator) {
+            default:
+            case "PF":
+                Fragment fragment1 = new PhotosFragment();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment1).commit();
+                PhotosFragment.currentItem = currentPos;
+                PhotosFragment.fromIndiv = currentPage2;
+                break;
+            case "UF":
+                Fragment fragment2 = new UserContentFragment();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment2).commit();
+                break;
+        }
     }
 
     @Override
@@ -92,6 +95,4 @@ public class IndividualPhotoFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 }

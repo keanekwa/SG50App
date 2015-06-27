@@ -72,7 +72,7 @@ public class SearchFragment extends Fragment {
         }
         mListView = (ListView) view.findViewById(R.id.searchListView);
         loading = (ProgressBar) view.findViewById(R.id.progressBar3);
-        loading.setVisibility(View.INVISIBLE);
+        loading.setVisibility(View.GONE);
         searchText = (EditText)view.findViewById(R.id.searchText);
         confirmButton = (ImageButton)view.findViewById(R.id.confirm_search);
         backButton = (ImageButton)view.findViewById(R.id.backArrow);
@@ -110,9 +110,6 @@ public class SearchFragment extends Fragment {
                 fragmentManager.beginTransaction().replace(R.id.container, PhotosFragment.newInstance()).commit();
             }
         });
-
-
-
 
         return view;
     }
