@@ -148,7 +148,7 @@ public class PostNewActivity extends ActionBarActivity {
                     }
 
                     // Resize photo
-                    Bitmap imageScaled = Bitmap.createScaledBitmap(chosenPic, 300, 300
+                    Bitmap imageScaled = Bitmap.createScaledBitmap(chosenPic, 750, 750
                             * chosenPic.getHeight() / chosenPic.getWidth(), false);
 
                     /* Override Android default landscape orientation and save portrait
