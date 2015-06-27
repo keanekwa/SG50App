@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.user.encapsulate.PhotosFragment"
-                android:background="#2B2B2B">
+                android:background="#262626">
 
     <com.parse.ParseImageView
         android:layout_width="match_parent"
@@ -13,7 +13,8 @@
         android:id="@+id/individualPhoto"
         android:layout_centerHorizontal="true"
         android:scaleType="centerInside"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        />
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -24,7 +25,9 @@
         android:layout_alignParentStart="true"
         android:src="@drawable/backarrow"
         android:tint="#ffffffff"
-        android:background="#2B2B2B"/>
+        android:background="@android:color/transparent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="8dp"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
