@@ -69,8 +69,7 @@
     <string name="placeholderName">John Smith</string>
     <string name="enterHere">Enter Here</string>
     <string name="post">Post</string>
-    <string name="onNatDay">On Singapore\'s 50th birthday, what do you want to do?</string>
-    <string name="onNatDayPost">On Singapore\'s 50th birthday, I want to…</string>
+    <string name="onNatDay">On Singapore\'s 50th birthday, I want to…</string>
     <string name="back">Back</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>

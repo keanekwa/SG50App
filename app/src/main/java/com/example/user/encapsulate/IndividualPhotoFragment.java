@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +49,11 @@ public class IndividualPhotoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final ActionBar actionBar = ((ActionBarActivity)getActivity()).getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_individual_photo, container, false);
         mImageView = (ParseImageView) view.findViewById(R.id.individualPhoto);
@@ -63,6 +68,9 @@ public class IndividualPhotoFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (actionBar != null) {
+                    actionBar.show();
+                }
                 switch (originator) {
                     default:
                     case "PF":
