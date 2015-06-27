@@ -26,7 +26,10 @@
             android:layout_toLeftOf="@+id/confirm_search"
             android:layout_toStartOf="@+id/confirm_search"
             android:maxLines="1"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:paddingBottom="15dp"
+            android:backgroundTint="@color/red"
+            android:textCursorDrawable="@drawable/red_cursor"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -80,13 +83,14 @@
             android:focusableInTouchMode="true" />
 
         <ProgressBar
-            style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:id="@+id/progressBar3"
             android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_bar_red"
+            android:visibility="gone"/>
 
         <RelativeLayout
             android:layout_width="match_parent"

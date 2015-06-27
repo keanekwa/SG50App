@@ -44,6 +44,8 @@ public class LoginActivity extends Activity {
         mLogin = (Button) findViewById(R.id.loginButton);
         final ProgressDialog mLoginLoader = new ProgressDialog(LoginActivity.this);
         mLoginLoader.setMessage(getString(R.string.login_dialog_message));
+        mLoginLoader.setIndeterminate(true);
+        mLoginLoader.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
         mLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

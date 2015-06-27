@@ -9,8 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:id="@+id/natDayLoading"/>
+        android:id="@+id/natDayLoading"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress_bar_red"
+        android:visibility="gone"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

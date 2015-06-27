@@ -27,7 +27,7 @@
         android:layout_height="50dp"
         android:indeterminate="true"
         android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/progress"
+        android:indeterminateDrawable="@drawable/progress_bar_white"
         android:layout_below="@+id/textView6"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="70dp"/>

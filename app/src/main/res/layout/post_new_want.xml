@@ -28,6 +28,8 @@
         android:id="@+id/captionEditText"
         android:textSize="20sp"
         android:hint="@string/enterHere"
+        android:backgroundTint="@color/red"
+        android:textCursorDrawable="@drawable/red_cursor"
         android:maxLines="3"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
@@ -61,7 +63,9 @@
             android:id="@+id/loadingProgressBar"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:indeterminate="true"
+            android:indeterminateDrawable="@drawable/progress_bar_red"/>
 
     </RelativeLayout>
 

@@ -33,5 +33,6 @@
         android:id="@+id/progressBar4"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:progressTint="@color/red"/>
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/progress_bar_red"/>
 </RelativeLayout>

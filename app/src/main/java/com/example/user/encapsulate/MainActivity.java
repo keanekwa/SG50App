@@ -143,6 +143,8 @@ public class MainActivity extends ActionBarActivity
         if (id == R.id.action_logout) {
             final ProgressDialog mLogoutLoader = new ProgressDialog(MainActivity.this);
             mLogoutLoader.setMessage(getString(R.string.logout_dialog_message));
+            mLogoutLoader.setIndeterminate(true);
+            mLogoutLoader.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
             mLogoutLoader.show();
             ParseUser.getCurrentUser().logOutInBackground(new LogOutCallback() {
                 @Override

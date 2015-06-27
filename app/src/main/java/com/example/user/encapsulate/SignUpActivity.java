@@ -34,6 +34,8 @@ public class SignUpActivity extends Activity {
 
         final ProgressDialog mSignUpLoader = new ProgressDialog(SignUpActivity.this);
         mSignUpLoader.setMessage(getString(R.string.signup_dialog_message));
+        mSignUpLoader.setIndeterminate(true);
+        mSignUpLoader.setIndeterminateDrawable(getResources().getDrawable(R.drawable.progress_bar_red));
         mAddAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
