@@ -1,4 +1,4 @@
-package com.example.user.sg50app;
+package com.example.user.encapsulate;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;

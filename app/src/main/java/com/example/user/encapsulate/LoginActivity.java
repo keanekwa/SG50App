@@ -1,4 +1,4 @@
-package com.example.user.sg50app;
+package com.example.user.encapsulate;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -10,8 +10,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.user.sg50app.MainActivity;
-import com.example.user.sg50app.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;

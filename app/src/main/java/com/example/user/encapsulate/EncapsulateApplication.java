@@ -1,14 +1,10 @@
-package com.example.user.sg50app;
+package com.example.user.encapsulate;
 
 import android.app.Application;
 
-import com.google.android.youtube.player.YouTubeApiServiceUtil;
-import com.google.android.youtube.player.YouTubePlayer;
-import com.google.api.services.youtube.YouTube;
-import com.google.api.services.youtube.YouTubeRequestInitializer;
 import com.parse.Parse;
 
-public class SG50Application extends Application {
+public class EncapsulateApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();

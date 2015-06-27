@@ -2,7 +2,7 @@
     android:minWidth="40dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"
-    android:previewImage="@drawable/singapicslogo"
+    android:previewImage="@drawable/encapsulatelogo"
     android:initialLayout="@layout/widget_design"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">

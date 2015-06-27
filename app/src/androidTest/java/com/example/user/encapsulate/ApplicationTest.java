@@ -1,4 +1,4 @@
-package com.example.user.sg50app;
+package com.example.user.encapsulate;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

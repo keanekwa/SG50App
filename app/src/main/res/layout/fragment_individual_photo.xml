@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.user.sg50app.PhotosFragment">
+    tools:context="com.example.user.encapsulate.PhotosFragment"
+                android:background="#2B2B2B">
 
     <com.parse.ParseImageView
         android:layout_width="match_parent"
@@ -22,8 +23,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:src="@drawable/backarrow"
-        android:background="#ff000000"
-        android:tint="#ffffffff" />
+        android:tint="#ffffffff"
+        android:background="#2B2B2B"/>
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
@@ -31,5 +32,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/progressBar4"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:progressTint="@color/red"/>
 </RelativeLayout>

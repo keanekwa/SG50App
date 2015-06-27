@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.user.sg50app" >
+    package="com.example.user.encapsulate" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -12,13 +12,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".SG50Application"
+        android:name=".EncapsulateApplication"
         android:allowBackup="true"
         android:icon="@drawable/encapsulateicon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         android:configChanges="orientation|screenSize">
-        <receiver android:name="WidgetClass" >
+        <receiver android:name="com.example.user.encapsulate.WidgetClass" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -26,28 +26,28 @@
                 android:resource="@xml/widget_provider" />
         </receiver>
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.user.encapsulate.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name="com.example.user.encapsulate.LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
         <activity
-            android:name=".SignUpActivity"
+            android:name="com.example.user.encapsulate.SignUpActivity"
             android:label="@string/title_activity_sign_up" >
         </activity>
         <activity
-            android:name=".PostNewActivity"
+            android:name="com.example.user.encapsulate.PostNewActivity"
             android:label="@string/title_activity_post_new"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName="com.example.user.encapsulate.MainActivity" >
 >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.user.sg50app.MainActivity" />
+                android:value="com.example.user.encapsulate.MainActivity" />
         </activity>
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="com.example.user.encapsulate.SplashScreenActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
