@@ -1,6 +1,5 @@
 package com.example.user.encapsulate;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -23,9 +22,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-/**
- * Created by ri on 26/6/2015.
- */
 public class WidgetClass extends AppWidgetProvider {
 
     public int currentimageindex=0;

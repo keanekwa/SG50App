@@ -2,24 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="220dp"
     android:layout_height="220dp"
-    android:padding="10sp">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:id="@+id/widgetImage"
-        android:scaleType="centerCrop"
-        android:layout_below="@+id/widgetTitle"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    android:padding="10sp"
+                android:background="@android:color/transparent">
 
     <TextView
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Today&apos;s Top Photos"
+        android:text="SG50 Photo of the Day"
         android:id="@+id/widgetTitle"
         android:layout_weight="1.10"
         android:textColor="#ffffffff"
@@ -28,6 +17,20 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:background="@color/red"
-        android:textSize="20dp"
-        android:textAlignment="center" />
+        android:textSize="16sp"
+        android:padding="10dp"
+        android:textAlignment="textStart"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/widgetImage"
+        android:scaleType="centerCrop"
+        android:layout_below="@+id/widgetTitle"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="@android:color/transparent"/>
+
 </RelativeLayout>
