@@ -27,20 +27,24 @@
         </receiver>
         <activity
             android:name="com.example.user.encapsulate.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.user.encapsulate.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.user.encapsulate.SignUpActivity"
-            android:label="@string/title_activity_sign_up" >
+            android:label="@string/title_activity_sign_up"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name="com.example.user.encapsulate.PostNewActivity"
             android:label="@string/title_activity_post_new"
-            android:parentActivityName="com.example.user.encapsulate.MainActivity" >
+            android:parentActivityName="com.example.user.encapsulate.MainActivity"
+            android:screenOrientation="portrait">
 >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,10 +53,10 @@
         <activity
             android:name="com.example.user.encapsulate.SplashScreenActivity"
             android:label="@string/app_name"
-            android:noHistory="true">
+            android:noHistory="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -239,11 +239,8 @@ public class DashboardFragment extends Fragment {
             slidingimage.startAnimation(rotateimage);
 
             currentimageindex++;
-<<<<<<< HEAD
-            if (currentimageindex == 2) {
-=======
-            if (currentimageindex == size) {
->>>>>>> origin/master
+
+            if (currentimageindex == 4) {
                 currentimageindex = 0;
             }
         }

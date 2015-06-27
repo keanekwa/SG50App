@@ -3,6 +3,7 @@ package com.example.user.encapsulate;
 /**
  * Created by adrieltan on 25/6/15.
  */
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
