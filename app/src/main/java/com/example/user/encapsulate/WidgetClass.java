@@ -1,5 +1,6 @@
 package com.example.user.encapsulate;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -8,14 +9,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
 import com.parse.FindCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -29,11 +34,12 @@ public class WidgetClass extends AppWidgetProvider {
     public int currentimageindex=0;
     ArrayList<ParseObject>placeholder = new ArrayList<>();
 
-    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    @Override
+    public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         final int N = appWidgetIds.length;
 
         // Perform this loop procedure for each App Widget that belongs to this provider
-        for (int appWidgetId : appWidgetIds) {
+        for (final int appWidgetId : appWidgetIds) {
             // Create an Intent to launch ExampleActivity
             Intent intent = new Intent(context, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
@@ -44,7 +50,6 @@ public class WidgetClass extends AppWidgetProvider {
             views.setOnClickPendingIntent(R.id.widgetImage, pendingIntent);
 
             // Tell the AppWidgetManager to perform an update on the current app widget
-            appWidgetManager.updateAppWidget(appWidgetId, views);
 
             final ParseQuery<ParseObject> query = ParseQuery.getQuery("allPostings");
             query.addDescendingOrder("likeNumber");
@@ -62,7 +67,8 @@ public class WidgetClass extends AppWidgetProvider {
                         final Runnable mUpdateResults = new Runnable() {
                             public void run() {
 
-                                parseObjects.get(currentimageindex).getParseFile("actualImage").getDataInBackground(new GetDataCallback() {
+                                ParseFile fileObject = placeholder.get(currentimageindex).getParseFile("actualImage");
+                                fileObject.getDataInBackground(new GetDataCallback() {
                                     @Override
                                     public void done(byte[] data, ParseException e) {
                                         if (e == null) {
@@ -71,18 +77,17 @@ public class WidgetClass extends AppWidgetProvider {
                                                             data, 0,
                                                             data.length);
                                             views.setImageViewBitmap(R.id.widgetImage, bmp);
-                                            views.setTextViewText(R.id.widgetTitle, parseObjects.get(currentimageindex).getString("imgTitle"));
-                                            currentimageindex++;
-                                            if (currentimageindex == 4) {
-                                                currentimageindex = 0;
-                                            }
+                                            appWidgetManager.updateAppWidget(appWidgetId, views);
+
                                         }
 
-                                        else{
-                                            views.setImageViewResource(R.id.widgetImage, R.drawable.image_placeholder);
-                                        }
                                     }
                                 });
+
+                                currentimageindex++;
+                                if (currentimageindex == 4) {
+                                    currentimageindex = 0;
+                                }
 
                             }
                         };
@@ -102,11 +107,13 @@ public class WidgetClass extends AppWidgetProvider {
                             }
 
                         }, delay, period);
+
                     }
+
                 }
             });
 
-        }
-    }
+        }}
+
 
 }

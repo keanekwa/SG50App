@@ -239,7 +239,7 @@ public class DashboardFragment extends Fragment {
             slidingimage.startAnimation(rotateimage);
 
             currentimageindex++;
-            if (currentimageindex == 4) {
+            if (currentimageindex == 2) {
                 currentimageindex = 0;
             }
         }
