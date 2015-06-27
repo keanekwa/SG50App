@@ -48,7 +48,10 @@ public class VideoPlayerFragment extends YouTubePlayerSupportFragment {
 
     @Override
     public void onPause(){
+        super.onPause();
+        if (activePlayer != null){
         activePlayer.pause();
+        }
     }
 
     @Override

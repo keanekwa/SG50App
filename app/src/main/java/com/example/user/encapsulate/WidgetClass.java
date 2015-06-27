@@ -72,7 +72,6 @@ public class WidgetClass extends AppWidgetProvider {
                                                             data.length);
                                             views.setImageViewBitmap(R.id.widgetImage, bmp);
                                             views.setTextViewText(R.id.widgetTitle, parseObjects.get(currentimageindex).getString("imgTitle"));
-                                            views.setTextViewText(R.id.widgetPoster,parseObjects.get(currentimageindex).getString("createdBy"));
                                             currentimageindex++;
                                             if (currentimageindex == 4) {
                                                 currentimageindex = 0;
