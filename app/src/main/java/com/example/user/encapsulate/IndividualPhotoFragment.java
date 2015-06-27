@@ -24,6 +24,7 @@ public class IndividualPhotoFragment extends Fragment {
     public static String currentPage2;
     private ParseImageView mImageView;
     private ProgressBar loading;
+    private OnIndieBackListener mListener;
 
     private ImageButton backButton;
 
@@ -62,32 +63,35 @@ public class IndividualPhotoFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backButtonHocusPocus();
+                switch (originator) {
+                    default:
+                    case "PF":
+                        mListener.backTo(2);
+                        PhotosFragment.currentItem = currentPos;
+                        PhotosFragment.fromIndiv = currentPage2;
+                        break;
+                    case "UF":
+                        mListener.backTo(1);
+                        break;
+                }
             }
         });
         return view;
     }
 
-    public void backButtonHocusPocus(){
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        switch (originator) {
-            default:
-            case "PF":
-                Fragment fragment1 = new PhotosFragment();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment1).commit();
-                PhotosFragment.currentItem = currentPos;
-                PhotosFragment.fromIndiv = currentPage2;
-                break;
-            case "UF":
-                Fragment fragment2 = new UserContentFragment();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment2).commit();
-                break;
-        }
+    public interface OnIndieBackListener{
+        public void backTo(int position);
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mListener = (OnIndieBackListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnIndieBackListener");
+        }
     }
 
 

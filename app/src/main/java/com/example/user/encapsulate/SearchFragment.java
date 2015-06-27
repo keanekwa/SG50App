@@ -46,6 +46,8 @@ public class SearchFragment extends Fragment {
     static String originator;
     RelativeLayout noResults;
 
+    private OnSearchBackListener mListener;
+
     public static SearchFragment newInstance(String origin) {
         originator = origin;
         return new SearchFragment();
@@ -107,7 +109,17 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.container, PhotosFragment.newInstance()).commit();
+                switch (originator) {
+                    case "PF":
+                        mListener.backTo(2);
+                        break;
+                    case "VF":
+                        mListener.backTo(4);
+                        break;
+                    case "WF":
+                        mListener.backTo(3);
+                        break;
+                }
             }
         });
 
@@ -204,9 +216,20 @@ public class SearchFragment extends Fragment {
         }
         loading.setVisibility(View.GONE);
     }
+
+    public interface OnSearchBackListener{
+        public void backTo(int position);
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        try {
+            mListener = (OnSearchBackListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnSearchBackListener");
+        }
     }
 
     @Override

@@ -88,6 +88,7 @@ public class OnNatDayFragment extends Fragment {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
+                    mPosts.clear();
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPosts.add(parseObjects.get(j));
                     }
@@ -181,17 +182,18 @@ public class OnNatDayFragment extends Fragment {
                     }
                     if (hasLiked) {
                         likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_outline));
-                    currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
-                            mWhoLikedList.remove(ParseUser.getCurrentUser());
-                            currentTopImage.put("likePeopleArray", mWhoLikedList);
-                        } else {
-                            likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
-                            currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
-                            mWhoLikedList.add(ParseUser.getCurrentUser());
-                            currentTopImage.put("likePeopleArray", mWhoLikedList);
-                        }
-                        currentTopImage.saveInBackground();
-                        likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") - 1));
+                        mWhoLikedList.remove(ParseUser.getCurrentUser());
+                        currentTopImage.put("likePeopleArray", mWhoLikedList);
+                    }
+                    else {
+                        likeImageView.setImageDrawable(getResources().getDrawable(R.drawable.like_icon));
+                        currentTopImage.put("likeNumber", (currentTopImage.getInt("likeNumber") + 1));
+                        mWhoLikedList.add(ParseUser.getCurrentUser());
+                        currentTopImage.put("likePeopleArray", mWhoLikedList);
+                    }
+                    currentTopImage.saveInBackground();
+                    likeNumberTextView.setText(String.valueOf(currentTopImage.getInt("likeNumber")) + getString(R.string.space) + getString(R.string.likes));
                     }
                 });
 
@@ -223,14 +225,13 @@ public class OnNatDayFragment extends Fragment {
             alert.show();
         }
 
-        public void positiveButton() {
-            EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
-            String post = mPostField.getText().toString();
-            if (post.equals("")){
-                Toast.makeText(getActivity(),"Please enter text.", Toast.LENGTH_LONG).show();
-            }
-
-            else{
+    public void positiveButton() {
+        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
+        String post = mPostField.getText().toString();
+        if (post.equals("")){
+            Toast.makeText(getActivity(),"Please enter text.", Toast.LENGTH_LONG).show();
+        }
+        else {
             ParseObject postObject = new ParseObject("onNationalDay");
             postObject.put("postTitle",post);
             postObject.put("likeNumber",0);
@@ -239,10 +240,9 @@ public class OnNatDayFragment extends Fragment {
                 @Override
                 public void done(ParseException e) {
                     Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
-
+                    refreshOnNatDay(true);
                 }
             });
-            }
         }
-
+    }
 }

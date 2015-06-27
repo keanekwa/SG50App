@@ -45,34 +45,30 @@ public class SplashScreenActivity extends Activity {
                     if (e == null) {
                         for (int j = 0; j < parseObjects.size(); j++) {
                             PhotosFragment.mTOP.add(parseObjects.get(j));
-                            if (PhotosFragment.mTOP.size() == 15) {
-                                ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
-                                query2.addDescendingOrder("createdAt");
-                                query2.findInBackground(new FindCallback<ParseObject>() {
-                                    @Override
-                                    public void done(List<ParseObject> list, ParseException e) {
-                                        for (int j = 0; j < list.size(); j++) {
-                                            String category = list.get(j).getString("category");
-                                            switch (category) {
-                                                case "BestOfPast":
-                                                    PhotosFragment.mPAST.add(list.get(j));
-                                                    break;
-                                                case "DayAsSGean":
-                                                    PhotosFragment.mPRESENT.add(list.get(j));
-                                                    break;
-                                                case "FutureHopes":
-                                                    PhotosFragment.mFUTURE.add(list.get(j));
-                                                    break;
-                                            }
-
-                                        }
-                                        loadUserContentContent();
-                                    }
-                                });
-                                break;
-                            }
                         }
+                        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("allPostings");
+                        query2.addDescendingOrder("createdAt");
+                        query2.findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                for (int j = 0; j < list.size(); j++) {
+                                    String category = list.get(j).getString("category");
+                                    switch (category) {
+                                        case "BestOfPast":
+                                            PhotosFragment.mPAST.add(list.get(j));
+                                            break;
+                                        case "DayAsSGean":
+                                            PhotosFragment.mPRESENT.add(list.get(j));
+                                            break;
+                                        case "FutureHopes":
+                                            PhotosFragment.mFUTURE.add(list.get(j));
+                                            break;
+                                    }
 
+                                }
+                                loadUserContentContent();
+                            }
+                        });
                     }
                 }
             });

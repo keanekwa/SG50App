@@ -20,7 +20,9 @@ import com.parse.ParseUser;
 
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks{
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        SearchFragment.OnSearchBackListener,
+        IndividualPhotoFragment.OnIndieBackListener{
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -71,6 +73,10 @@ public class MainActivity extends ActionBarActivity
             int position = infoIntent.getIntExtra("goto", 0) - 1;
             onNavigationDrawerItemSelected(position);
         }
+    }
+
+    public void backTo(int position){
+        onNavigationDrawerItemSelected(position);
     }
 
     @Override

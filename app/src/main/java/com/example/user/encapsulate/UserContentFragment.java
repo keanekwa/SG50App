@@ -145,6 +145,7 @@ public class UserContentFragment extends Fragment {
             @Override
             public void done(List<ParseObject> parseObjects, ParseException e) {
                 if (e == null) {
+                    mPHOTOS.clear();
                     for (int j = 0; j < parseObjects.size(); j++) {
                         mPHOTOS.add(parseObjects.get(j));
                     }
@@ -155,6 +156,7 @@ public class UserContentFragment extends Fragment {
                         @Override
                         public void done(List<ParseObject> parseObjects, ParseException e) {
                             if (e == null) {
+                                mWISHES.clear();
                                 for (int j = 0; j < parseObjects.size(); j++) {
                                     mWISHES.add(parseObjects.get(j));
                                 }
