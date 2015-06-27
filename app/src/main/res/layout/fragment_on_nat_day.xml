@@ -12,7 +12,8 @@
         android:id="@+id/natDayLoading"
         android:indeterminate="true"
         android:indeterminateDrawable="@drawable/progress_bar_red"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:elevation="10dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"

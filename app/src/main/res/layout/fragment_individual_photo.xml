@@ -34,5 +34,6 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:indeterminate="true"
-        android:indeterminateDrawable="@drawable/progress_bar_red"/>
+        android:indeterminateDrawable="@drawable/progress_bar_red"
+        android:elevation="10dp"/>
 </RelativeLayout>

@@ -120,7 +120,7 @@ public class DashboardFragment extends Fragment {
                 query.setLimit(5);
                 query.findInBackground(new FindCallback<ParseObject>() {
                     @Override
-                    public void done(List<ParseObject> parseObjects, ParseException e) {
+                    public void done(final List<ParseObject> parseObjects, ParseException e) {
                         if (e == null) {
                             for (int j = 0; j < parseObjects.size(); j++) {
                                 placeholder.add(parseObjects.get(j));
@@ -131,7 +131,7 @@ public class DashboardFragment extends Fragment {
                             final Runnable mUpdateResults = new Runnable() {
                                 public void run() {
 
-                                    AnimateandSlideShow();
+                                    AnimateandSlideShow(parseObjects.size());
 
                                 }
                             };
@@ -222,7 +222,7 @@ public class DashboardFragment extends Fragment {
         super.onDetach();
     }
 
-    private void AnimateandSlideShow() {
+    private void AnimateandSlideShow(int size) {
         Activity activity = getActivity();
         if(activity != null) {
             ParseFile fileObject = placeholder.get(currentimageindex).getParseFile("actualImage");
@@ -239,7 +239,11 @@ public class DashboardFragment extends Fragment {
             slidingimage.startAnimation(rotateimage);
 
             currentimageindex++;
+<<<<<<< HEAD
             if (currentimageindex == 2) {
+=======
+            if (currentimageindex == size) {
+>>>>>>> origin/master
                 currentimageindex = 0;
             }
         }
