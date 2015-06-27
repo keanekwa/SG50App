@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.RemoteViews;
 
 import com.parse.FindCallback;
@@ -20,7 +18,6 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -33,6 +30,7 @@ public class WidgetClass extends AppWidgetProvider {
 
     public int currentimageindex=0;
     ArrayList<ParseObject>placeholder = new ArrayList<>();
+    ArrayList<Bitmap>btmPlaceholder = new ArrayList<>();
 
     @Override
     public void onUpdate(final Context context, final AppWidgetManager appWidgetManager, int[] appWidgetIds) {
@@ -61,28 +59,33 @@ public class WidgetClass extends AppWidgetProvider {
                         for (int j = 0; j < parseObjects.size(); j++) {
                             placeholder.add(parseObjects.get(j));
                         }
+                        for (int j = 0; j < parseObjects.size(); j++) {
+                            if (j != 5){
+                            ParseFile fileObject = placeholder.get(j).getParseFile("actualImage");
+                            fileObject.getDataInBackground(new GetDataCallback() {
+                                @Override
+                                public void done(byte[] data, ParseException e) {
+                                    if (e == null) {
+
+                                        Bitmap bmp = BitmapFactory
+                                                .decodeByteArray(
+                                                        data, 0,
+                                                        data.length);
+                                        scaleDownBitmap(bmp,100,context);
+                                        btmPlaceholder.add(bmp);
+                                    }}});}
+
+                        else{
+                                break;
+                            }}
                         final Handler mHandler = new Handler();
 
                         // Create runnable for posting
                         final Runnable mUpdateResults = new Runnable() {
                             public void run() {
-
-                                ParseFile fileObject = placeholder.get(currentimageindex).getParseFile("actualImage");
-                                fileObject.getDataInBackground(new GetDataCallback() {
-                                    @Override
-                                    public void done(byte[] data, ParseException e) {
-                                        if (e == null) {
-                                            Bitmap bmp = BitmapFactory
-                                                    .decodeByteArray(
-                                                            data, 0,
-                                                            data.length);
-                                            views.setImageViewBitmap(R.id.widgetImage, bmp);
+                                            views.setImageViewBitmap(R.id.widgetImage,btmPlaceholder.get(currentimageindex));
                                             appWidgetManager.updateAppWidget(appWidgetId, views);
 
-                                        }
-
-                                    }
-                                });
 
                                 currentimageindex++;
                                 if (currentimageindex == 4) {
@@ -115,5 +118,15 @@ public class WidgetClass extends AppWidgetProvider {
 
         }}
 
+    public static Bitmap scaleDownBitmap(Bitmap photo, int newHeight, Context context) {
 
+        final float densityMultiplier = context.getResources().getDisplayMetrics().density;
+
+        int h= (int) (newHeight*densityMultiplier);
+        int w= (int) (h * photo.getWidth()/((double) photo.getHeight()));
+
+        photo=Bitmap.createScaledBitmap(photo, w, h, true);
+
+        return photo;
+    }
 }

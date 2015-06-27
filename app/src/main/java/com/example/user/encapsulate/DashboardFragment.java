@@ -239,54 +239,10 @@ public class DashboardFragment extends Fragment {
             slidingimage.startAnimation(rotateimage);
 
             currentimageindex++;
-<<<<<<< HEAD
-            if (currentimageindex == 2) {
-=======
-            if (currentimageindex == size) {
->>>>>>> origin/master
+            if (currentimageindex == 4) {
                 currentimageindex = 0;
             }
-        }
-    }
-
-    public void Dialog() {
-        LayoutInflater factory = LayoutInflater.from(getActivity());
-        mTextEntryView = factory.inflate(R.layout.post_new_want, null);
-        Button pbutton = (Button)mTextEntryView.findViewById(R.id.finalizeButton);
-        Button nbutton = (Button)mTextEntryView.findViewById(R.id.backButton);
-
-        final Dialog alert = new Dialog(getActivity());
-        alert.setTitle("New Post");
-        alert.setContentView(mTextEntryView);
-
-        pbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                positiveButton();
-                alert.dismiss();
-            }
-        });
-        nbutton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                alert.dismiss();
-            }
-        });
-        alert.show();
-    }
-
-    public void positiveButton() {
-        EditText mPostField = (EditText) mTextEntryView.findViewById(R.id.captionEditText);
-        String post = mPostField.getText().toString();
-        ParseObject postObject = new ParseObject("onNationalDay");
-        postObject.put("postTitle", post);
-        postObject.put("likeNumber", 0);
-        postObject.put("createdBy", ParseUser.getCurrentUser().getUsername());
-        postObject.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                Toast.makeText(getActivity(), "Posted!", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
+    }}
 
 
 }
