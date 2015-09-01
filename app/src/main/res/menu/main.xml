@@ -12,9 +12,4 @@
         android:orderInCategory="200"
         android:icon="@drawable/ic_refresh_white_24dp"
         app:showAsAction="ifRoom"/>
-    <item android:id="@+id/action_back"
-        android:title="@string/back"
-        android:orderInCategory="100"
-        android:icon="@drawable/backarrow"
-        app:showAsAction="ifRoom"/>
 </menu>

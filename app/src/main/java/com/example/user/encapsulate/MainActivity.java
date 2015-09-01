@@ -38,7 +38,6 @@ public class MainActivity extends ActionBarActivity
     private static UserContentFragment mUserContentFragment;
     private static OnNatDayFragment mOnNatDayFragment;
     private static VideosFragment mVideosFragment;
-    public static Boolean YOrN = false;
     public static String origin;
     private int mCurrentFrag;
     private static Menu mMenu;
@@ -131,13 +130,6 @@ public class MainActivity extends ActionBarActivity
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
             getMenuInflater().inflate(R.menu.main, menu);
             mMenu = menu;
-            MenuItem backIcon = menu.findItem(R.id.action_back);
-            if (YOrN){
-                backIcon.setVisible(true);
-            }
-            else{
-                backIcon.setVisible(false);
-            }
             restoreActionBar();
             return true;
         }

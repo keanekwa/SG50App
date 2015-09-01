@@ -78,4 +78,6 @@
     <string name="title_activity_play_video">PlayVideoActivity</string>
     <string name="suggest">Suggest</string>
     <string name="suggestInfo">Suggest a video for the current theme.</string>
+    <string name="login_error">Error logging in, please try again.</string>
+    <string name="signup_error">Error signing up, please try again.</string>
 </resources>

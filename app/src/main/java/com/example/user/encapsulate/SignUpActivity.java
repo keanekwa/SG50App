@@ -71,13 +71,13 @@ public class SignUpActivity extends Activity {
                                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                                             SignUpActivity.this.startActivity(intent);
                                         } else {
-                                            alertMessage(e.toString());
+                                            alertMessage(getString(R.string.login_error));
                                         }
                                     }
                                 });
                             }
                             else {
-                                alertMessage(e.toString());
+                                alertMessage(getString(R.string.signup_error));
                             }
                         }
                     });

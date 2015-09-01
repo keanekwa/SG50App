@@ -72,6 +72,7 @@ public class DashboardFragment extends Fragment {
         Activity activity = getActivity();
         if(activity != null) {
             final TextView countdownTitle = (TextView) view.findViewById(R.id.countdownTitle);
+            final TextView countdownTitle2 = (TextView) view.findViewById(R.id.countdownTitle2);
             final TextView dayNo = (TextView) view.findViewById(R.id.dayNo);
             final TextView hourNo = (TextView) view.findViewById(R.id.hourNo);
             final TextView minuteNo = (TextView) view.findViewById(R.id.minuteNo);
@@ -92,8 +93,8 @@ public class DashboardFragment extends Fragment {
 
             Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Singapore"));
             final long nowTime = calendar.getTimeInMillis();
-            final long ndpTime = 1439049600000L;
-            long countdownTime = ndpTime-nowTime;
+            final long endOfSG50 = 1470672000000L;
+            long countdownTime = endOfSG50-nowTime;
             new CountDownTimer(countdownTime, 1000) {
                  public void onTick(long millisUntilFinished) {
                     Calendar countdownCalendar = Calendar.getInstance();
@@ -105,7 +106,8 @@ public class DashboardFragment extends Fragment {
                 }
                 public void onFinish() {
                     countdownLinearLayout.setVisibility(View.INVISIBLE);
-                    countdownTitle.setText("Happy 50th Birthday, Singapore!!!");
+                    countdownTitle.setText("Hope you had a great SG50!");
+                    countdownTitle2.setVisibility(View.GONE);
                     countdownTitle.setTextSize(28);
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                     params.setMargins(0, 0, 0, 0);

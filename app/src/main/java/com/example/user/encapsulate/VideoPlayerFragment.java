@@ -13,12 +13,10 @@ public class VideoPlayerFragment extends YouTubePlayerSupportFragment {
     private YouTubePlayer activePlayer;
 
     public static VideoPlayerFragment newInstance(String url) {
-        MainActivity.YOrN = true;
         VideoPlayerFragment videoPlayerFragment = new VideoPlayerFragment();
 
         Bundle bundle = new Bundle();
         bundle.putString("url", url);
-
 
         videoPlayerFragment.setArguments(bundle);
         videoPlayerFragment.init();
@@ -59,7 +57,6 @@ public class VideoPlayerFragment extends YouTubePlayerSupportFragment {
         if (activePlayer != null) {
             activePlayer.release();
         }
-        MainActivity.YOrN = false;
         super.onDestroy();
     }
 }
